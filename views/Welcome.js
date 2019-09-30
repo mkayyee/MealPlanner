@@ -1,12 +1,13 @@
-import React, {useState, useEffect}  from 'react';
+import React, {useState}  from 'react';
 import {
   ImageBackground,
   View,
-  Image,
   StyleSheet
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import * as Facebook from 'expo-facebook';
 import PropTypes from 'prop-types';
-import { Content, Text, Left, Body, Button, Form, Container } from 'native-base';
+import { Content, Text, Button, Form, Container } from 'native-base';
 import useSignUpForm from '../hooks/LoginHooks';
 import mediaAPI from '../hooks/ApiHooks';
 import FormTextInput from '../components/FormTextInput';
@@ -16,9 +17,7 @@ const Welcome = (props) => { // props is needed for navigation
   const {navigation} = props;
 
   const [isRegistered, setRegisterState] = useState(undefined);
-
-    //useEffect(() => console.log("isRegistered", isRegistered),[isRegistered]);
-
+    
     const {signInAsync, registerAsync} = mediaAPI();
 
     const LoginForm = () => {
@@ -26,7 +25,8 @@ const Welcome = (props) => { // props is needed for navigation
       const {inputs, handleLoginUsernameChange, handleLoginPasswordChange} = useSignUpForm();
 
     return (
-   <ImageBackground  blurRadius={5} source = {require("../pictures/vegetables.jpeg")} style={styles.backgroudImStyle} >
+      
+   <Content>
     <Form style={{paddingTop:100}}>
         <Text style={{textAlign: 'center', color: "white", fontSize: 20, fontWeight: "bold"}}>Login</Text>
 
@@ -50,7 +50,7 @@ const Welcome = (props) => { // props is needed for navigation
           <Button style={styles.buttonStyle} rounded info onPress={() => {signInAsync(inputs,props);} }><Text>Login</Text></Button>
           <Button style={styles.buttonStyle} rounded info onPress = {() => setRegisterState(undefined)}><Text>Back to Welcome Screen</Text></Button>
     </Form>
-  </ImageBackground>
+  </Content>
       );
       };
 
@@ -61,7 +61,7 @@ const RegistrationForm = () => {
 const {inputs, handleUsernameChange, handlePasswordChange, handleConfirmPasswordChange,
   handleEmailChange, handleFull_NameChange, errors, validateOnSend, checkUserAvailable} = useSignUpForm();
 return(
-<ImageBackground blurRadius={5} source = {require("../pictures/vegetables.jpeg")} style={styles.backgroudImStyle} >
+<Content >
   <Form style={{paddingTop:100}}>
     <Text style={{textAlign: 'center', color: "white", fontSize: 20, fontWeight: "bold"}}>Registration</Text>
 
@@ -115,27 +115,51 @@ return(
       <Button style={styles.buttonStyle} rounded info onPress = {() => setRegisterState(undefined)}><Text>Back to Welcome Screen</Text></Button>
   </Form>
 
-</ImageBackground>
+</Content>
 );
 };
+
+
+async function logIn() {
+  try {
+    const {
+      type,
+      token,
+      expires,
+      permissions,
+      declinedPermissions,
+    } = await Facebook.logInWithReadPermissionsAsync('<APP_ID>', {
+      permissions: ['public_profile'],
+    });
+    if (type === 'success') {
+      // Get the user's name using Facebook's Graph API
+      const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+      Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+    } else {
+      // type === 'cancel'
+    }
+  } catch ({ message }) {
+    alert(`Facebook Login Error: ${message}`);
+  }
+};
+
  
   return (
-  
-       <ImageBackground source = {require("../pictures/vegetables2.jpeg")} style={styles.backgroudImStyle}>
-    
-      
+
+    <ImageBackground blurRadius={5} source = {require("../pictures/vegetables.jpeg")} style={styles.backgroudImStyle} >  
        {isRegistered === undefined && 
+       <ImageBackground source = {require("../pictures/vegetables2.jpeg")} style={styles.backgroudImStyle}>
        <View style ={styles.welcomeButtons}>
-       <Button style={styles.buttonStyle} rounded info><Text>Connect with Facebook</Text></Button>
+       <Button name ="facebook" style={styles.buttonStyle} rounded info onPress={() => logIn()} ><Text>Connect with Facebook</Text></Button>
        <Button style={styles.buttonStyle} rounded info
        onPress = {() => setRegisterState(false)}>
          <Text>Sign up with e-mail</Text></Button>
        <Button style={styles.buttonStyle} rounded info
-       onPress={()=> {navigation.push('Home');}}>
+       onPress={()=> {navigation.navigate('Home');}}>
          <Text>Browse recipes</Text></Button>
        <Text style ={styles.centerText}>Already have an account? <Text onPress = {() => setRegisterState(true)}   style={styles.underlineText}>Log in</Text></Text>
        </View>
-      
+       </ImageBackground>  
       }
        
       {isRegistered && <LoginForm/>}
@@ -144,7 +168,8 @@ return(
       {(!isRegistered && isRegistered!=undefined) && <RegistrationForm/>}
        
 
-       </ImageBackground>  
+      
+       </ImageBackground>
 
 
 
@@ -178,8 +203,7 @@ const styles = StyleSheet.create({
     width: '100%', 
     height: '100%'
   },
- 
-   
+    
 });
 
 // proptypes here

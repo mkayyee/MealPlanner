@@ -56,6 +56,20 @@ const mediaAPI = () => {
       signInAsync(inputs, props);
     }
   };
+
+  const userFree = async(username) => {
+
+    const json = await fetchGetUrl(apiUrl + 'users/username/' + username);
+    if (!json.error) {
+      if (json.available) {
+        return 'Username ' + json.username + ' is available. ';
+      } else {
+        return 'Username ' + json.username + ' is not available. ';
+      }
+    } else {
+      //console.log(json.error);
+    }
+  };
  
 
 
@@ -63,6 +77,7 @@ const mediaAPI = () => {
     
     signInAsync,
     registerAsync,
+    userFree,
     
   };
 };

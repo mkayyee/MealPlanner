@@ -3,25 +3,26 @@ import {StyleSheet, View, Text, AsyncStorage} from 'react-native';
 import { Button, Content } from 'native-base';
 import PropTypes from 'prop-types';
 
-const Single = (props) => {
+const Search = (props) => {
 
     return (
       <View style ={styles.welcomeButtons}>
-       <Text>Welcome to MyRecipes Screen</Text>
+       <Text>Welcome to Search Screen</Text>
       </View>
     );
   };
 
   const styles = StyleSheet.create({
     welcomeButtons: {
-      paddingTop:400,
+      alignItems:"center",
+      paddingTop:200,
     },
   });
 
 
   //props
-  Single.propTypes = {
+  Search.propTypes = {
     navigation: PropTypes.object,
   };
 
-  export default Single;
+  export default Search;

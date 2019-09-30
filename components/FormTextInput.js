@@ -10,7 +10,7 @@ const FormTextInput = (props) => {
       <Item rounded style ={{backgroundColor:"white"}}>
         <Input {...otherProps} />
       </Item>
-      {error && <Label>{error}</Label>}
+  {error && <Label style={{color:"white"}}>{error}</Label>}
     </View>
   );
 };
