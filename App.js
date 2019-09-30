@@ -7,6 +7,7 @@ import {Ionicons} from '@expo/vector-icons';
 import {AppLoading} from 'expo';
 
 import Welcome from './views/Welcome';
+import Navigator from './navigators/Navigator'
 
 const App = () => {
 
@@ -33,7 +34,7 @@ const App = () => {
 
   return (
    
-      <Welcome/> 
+      <Navigator/> 
       
   );
 };
