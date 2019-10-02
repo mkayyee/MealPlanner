@@ -2,7 +2,9 @@ import React, {useState}  from 'react';
 import {
   ImageBackground,
   View,
-  StyleSheet
+  StyleSheet,
+  Alert,
+  AsyncStorage,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as Facebook from 'expo-facebook';
@@ -120,6 +122,8 @@ return(
 };
 
 
+//[userInfo, setUserInfo] = useState({});
+
 async function logIn() {
   try {
     const {
@@ -128,19 +132,23 @@ async function logIn() {
       expires,
       permissions,
       declinedPermissions,
-    } = await Facebook.logInWithReadPermissionsAsync('<APP_ID>', {
+    } = await Facebook.logInWithReadPermissionsAsync('485892822264998', {
       permissions: ['public_profile'],
     });
     if (type === 'success') {
       // Get the user's name using Facebook's Graph API
-      const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+      const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,picture.type(large)`);
+      console.log("facebooktoken", token);
       Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+      await AsyncStorage.setItem('userToken', token);
+      props.navigation.navigate('App');
     } else {
       // type === 'cancel'
     }
   } catch ({ message }) {
     alert(`Facebook Login Error: ${message}`);
   }
+
 };
 
  

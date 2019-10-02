@@ -41,6 +41,7 @@ const mediaAPI = () => {
     const json = await fetchPostUrl(apiUrl + 'login', data);
     await AsyncStorage.setItem('userToken', json.token);
     await AsyncStorage.setItem('user', JSON.stringify(json.user));
+    console.log("strihgify", JSON.stringify(json.user));
     props.navigation.navigate('App');
   };
 

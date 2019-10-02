@@ -1,6 +1,6 @@
 import React from 'react';
-import {StyleSheet, View, Text, AsyncStorage} from 'react-native';
-import { Button, Content } from 'native-base';
+import {StyleSheet, View, AsyncStorage} from 'react-native';
+import { Button, Content, Text } from 'native-base';
 import PropTypes from 'prop-types';
 
 const Profile = (props) => {

@@ -4,6 +4,7 @@
     "slug": "MealPlanner",
     "privacy": "public",
     "sdkVersion": "35.0.0",
+    "facebookScheme":"fb485892822264998",
     "platforms": [
       "ios",
       "android",
