@@ -3,8 +3,7 @@ import { View, Text } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
-import {Icon} from 'native-base';
-
+import { Icon } from 'native-base';
 
 import AuthLoading from '../views/AuthLoading';
 import Welcome from '../views/Welcome';
@@ -13,6 +12,8 @@ import Profile from '../views/Profile';
 import MyRecipes from '../views/MyRecipes';
 import Single from '../views/Single';
 import Search from '../views/Search';
+import CreateRecipe from '../views/CreateRecipe';
+import Ingredients from '../views/Ingredients';
 
 const TabNavigator = createBottomTabNavigator(
   {
@@ -20,12 +21,12 @@ const TabNavigator = createBottomTabNavigator(
     Search,
     MyRecipes,
     Profile,
-
+    CreateRecipe,
   },
   {
-    defaultNavigationOptions: ({navigation}) => ({
+    defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: () => {
-        const {routeName} = navigation.state;
+        const { routeName } = navigation.state;
         let iconName;
         if (routeName === 'Home') {
           iconName = 'home';
@@ -35,46 +36,44 @@ const TabNavigator = createBottomTabNavigator(
           iconName = 'add';
         } else if (routeName === 'Search') {
           iconName = 'search';
+        } else if (routeName === 'CreateRecipe') {
+          iconName = 'md-document';
         }
 
         // You can return any component that you like here!
-        return <Icon
-          name={iconName}
-          size={25}
-        />;
-      },
-    }),
+        return <Icon name={iconName} size={25} />;
+      }
+    })
   }
 );
 
-const StackNavigator = createStackNavigator(
-    {
-      Home: {
-        screen: TabNavigator,
-        navigationOptions: {
-        header: null, // this will hide the header
-        },
-      },
-      Single: {
-        screen: Single,
-      },
-        Logout: {
-          screen: Welcome,
-        },  
-    },
-  );
-
-
-  const Navigator = createSwitchNavigator(
-    {
-      AuthLoading: AuthLoading,
-      App: StackNavigator,
-      Auth: Welcome,
-    },
-    {
-      initialRouteName: 'AuthLoading',
+const StackNavigator = createStackNavigator({
+  Home: {
+    screen: TabNavigator,
+    navigationOptions: {
+      header: null // this will hide the header
     }
-  );
-  
-  
-  export default createAppContainer(Navigator);
+  },
+  Single: {
+    screen: Single
+  },
+  Logout: {
+    screen: Welcome
+  },
+  Ingredients: {
+    screen: Ingredients,
+  },
+});
+
+const Navigator = createSwitchNavigator(
+  {
+    AuthLoading: AuthLoading,
+    App: StackNavigator,
+    Auth: Welcome
+  },
+  {
+    initialRouteName: 'AuthLoading'
+  }
+);
+
+export default createAppContainer(Navigator);

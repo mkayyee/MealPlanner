@@ -1,7 +1,9 @@
 import {useState, useContext, useEffect} from 'react';
 import {AsyncStorage} from 'react-native';
+import {IngredientContext} from '../context/IngredientContext';
 
 const apiUrl = 'http://media.mw.metropolia.fi/wbma/';
+const foodUrl = 'http://185.87.111.206/foodapi/';
 
 const fetchGetUrl = async (url) => {
   const userToken = await AsyncStorage.getItem('userToken');
@@ -71,6 +73,29 @@ const mediaAPI = () => {
       //console.log(json.error);
     }
   };
+
+  const getAllIngredients = () => {
+    const [ingredients, setIngredients] = useContext(IngredientContext);
+    const fetchUrl = async () => {
+      const response = await fetch(foodUrl + 'all');
+      const json = await response.json();
+      const fullJson = json.map(async (element, index) => {
+        element.key = `${index}`;
+        return element;
+      });
+      const resolved = await Promise.all(fullJson);
+  
+      // removing reduntant information
+      const filtered = resolved.map((obj)=>{
+        return (obj.hits[0].fields);
+      });
+      setIngredients(filtered);
+    };
+    useEffect(() => {
+      fetchUrl();
+    }, []);
+    return [ingredients];
+  };
  
 
 
@@ -79,6 +104,7 @@ const mediaAPI = () => {
     signInAsync,
     registerAsync,
     userFree,
+    getAllIngredients,
     
   };
 };

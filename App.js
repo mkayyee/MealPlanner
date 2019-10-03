@@ -6,6 +6,8 @@ import * as Font from 'expo-font';
 import {Ionicons} from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import {AppLoading} from 'expo';
+import {SIProvider} from './context/SelectedIngredients';
+import {IngredientProvider} from './context/IngredientContext';
 
 import Welcome from './views/Welcome';
 import Navigator from './navigators/Navigator'
@@ -23,7 +25,7 @@ const App = () => {
   ...FontAwesome.font,
   });
   setIsReady(true);
-  };
+  }; 
 
   useEffect(() => {
   loadFonts();
@@ -34,8 +36,11 @@ const App = () => {
   }
 
   return (
-   
+    <IngredientProvider>
+      <SIProvider>
       <Navigator/> 
+      </SIProvider>
+      </IngredientProvider>
       
   );
 };
