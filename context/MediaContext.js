@@ -9,7 +9,6 @@ const MediaProvider = (props) => {
     children,
   } = props;
   const [media, setMedia] = useState(initialMedia);
-
   const [user, setUser] = useState(initialUser);
 
   const appContext = {
@@ -37,4 +36,4 @@ MediaProvider.defaultProps = {
   user: {},
 };
 
-export {MediaContext, MediaProvider}
+export {MediaContext, MediaProvider};

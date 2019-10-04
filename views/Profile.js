@@ -18,7 +18,9 @@ const Profile = (props) => {
   ];
 
   const {user} = useContext(MediaContext);
- // console.log('user', user);
+   
+  
+  console.log('user', user);
   const {getAvatar} = mediaAPI();
 
   const signOutAsync = async () => {

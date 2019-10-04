@@ -11,6 +11,7 @@ import {IngredientProvider} from './context/IngredientContext';
 
 import Welcome from './views/Welcome';
 import Navigator from './navigators/Navigator'
+import {MediaProvider} from './context/MediaContext';
 
 const App = () => {
 
@@ -36,12 +37,13 @@ const App = () => {
   }
 
   return (
+    <MediaProvider>
     <IngredientProvider>
       <SIProvider>
       <Navigator/> 
       </SIProvider>
       </IngredientProvider>
-      
+      </MediaProvider>  
   );
 };
 
