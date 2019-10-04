@@ -4,7 +4,7 @@ import {useState} from 'react';
 const useRecipeSearch = () => {
   const [input, setInput] = useState({letters: ''});
   const handleSearchChange = (text) => {
-    setInput((inputs) => ({
+    setInput((input) => ({
       ...input,
       letters: text,
     }));

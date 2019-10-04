@@ -1,6 +1,7 @@
 import {useState, useContext, useEffect} from 'react';
 import {AsyncStorage} from 'react-native';
 import {IngredientContext} from '../context/IngredientContext';
+import {MediaContext} from '../context/MediaContext';
 
 const apiUrl = 'http://media.mw.metropolia.fi/wbma/';
 const foodUrl = 'http://185.87.111.206/foodapi/';
@@ -97,6 +98,17 @@ const mediaAPI = () => {
     return [ingredients];
   };
  
+  const userToContext = async () => { // Call this when app starts (= Home.js)
+    const {user, setUser} = useContext(MediaContext);
+    const getFromStorage = async () => {
+      const storageUser = JSON.parse(await AsyncStorage.getItem('user'));
+      setUser(storageUser);
+    }
+    useEffect(() => {
+      getFromStorage();
+    }, []);
+    return [user];
+  };
 
 
   return {
@@ -105,6 +117,7 @@ const mediaAPI = () => {
     registerAsync,
     userFree,
     getAllIngredients,
+    userToContext,
     
   };
 };
