@@ -1,21 +1,15 @@
 import React, {useContext, useState} from 'react';
 import {StyleSheet, View,  AsyncStorage, Image} from 'react-native';
 import PropTypes from 'prop-types';
-import { Container, Title, Accordion, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
+import { List, ListItem, Separator, Container, Title, Accordion, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import DatePicker from 'react-native-datepicker';
+import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native";
 
 import {MediaContext} from '../context/MediaContext';
 import mediaAPI from '../hooks/ApiHooks';
 
 const Profile = (props) => {
 
-
-  const dataArray = [
-    { title: "Breakfast", content: ["Lorem ipsum dolor sit amet","Vegetables"] },
-    { title: "Lunch", content: "Lorem ipsum dolor sit amet" },
-    { title: "Dinner", content: "Lorem ipsum dolor sit amet" },
-    { title: "Extra", content: "Lorem ipsum dolor sit amet" }
-  ];
 
   const {user} = useContext(MediaContext);
    
@@ -87,14 +81,54 @@ const Profile = (props) => {
           </CardItem>
           </Card>
 
-          <Text>Plan for {date} </Text>
+          <Text style ={{textAlign:"center", justifyContent:"center",paddingTop:5, paddingBottom:5, fontSize:20}}>Plan for {date} </Text>
+         
+         <Card style={{flex: 0}}>
+         <CardItem>
+         <Left>
+         <Body>
+         <Text>BREAKFAST</Text>
+         </Body>
+         <Button transparent style ={{paddingLeft:30}}><Icon name= "add-circle"></Icon></Button>
+        
+         </Left>
+         </CardItem>
+         </Card>
+         <Card style={{flex: 0}}>
+         <CardItem>
+         <Left>
+         <Body>
+         <Text>LUNCH</Text>
+         </Body>
+         <Button transparent style ={{paddingLeft:30}}><Icon name= "add-circle"></Icon></Button>
+        
+         </Left>
+         </CardItem>
+         </Card>
 
-          <Accordion
+         <Card style={{flex: 0}}>
+         <CardItem>
+         <Left>
+         <Body>
+         <Text>DINNER</Text>
+         </Body>
+         <Button transparent style ={{paddingLeft:30}}><Icon name= "add-circle"></Icon></Button>
+        
+         </Left>
+         </CardItem>
+         </Card>
 
-            dataArray={dataArray}
-            headerStyle={{ backgroundColor: "#b7daf8" }}
-            contentStyle={{ backgroundColor: "#ddecf8", flex: 1, flexDirection: 'column'}}
-          />
+         <Card style={{flex: 0}}>
+         <CardItem>
+         <Left>
+         <Body>
+         <Text>EXTRA</Text>
+         </Body>
+         <Button transparent style ={{paddingLeft:30}}><Icon name= "add-circle"></Icon></Button>
+        
+         </Left>
+         </CardItem>
+         </Card>
 
 
         </Content>

@@ -29,9 +29,21 @@ const Home = (props) => {
       <Card style={{flex: 0}}>
             <CardItem>
               
-                <Body>
-                <Text>Welcome to Home Screen (Recipes)</Text>
-                </Body>
+            <Body>
+                <Image source={require("../pictures/salad.jpeg")} style={{height: 340, width: 340}}/>
+                <Thumbnail source={require("../pictures/mia.jpg")} style={{borderRadius: 50,
+                width: 40,
+                height: 40, position:"absolute", top: 15, left: 5, right: 0, bottom: 0}} />
+                <Text style= {{fontWeight:"bold",  color:"white", position:"absolute", top: 22, left: 55, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
+                  by Username
+                </Text>
+                <Text style= {{fontWeight:"bold",fontSize:40,  color:"white", position:"absolute", top: 230, left: 20, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
+                  RecipeName
+                </Text>
+                <Text style= {{fontWeight:"bold",fontSize:27,  color:"white", position:"absolute", top: 275, left: 20, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
+                  Calories
+                </Text>
+              </Body>
                 
             </CardItem>
        </Card>     
