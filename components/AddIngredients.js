@@ -1,12 +1,23 @@
-import React, {useState, useContext} from 'react';
-import {StyleSheet, ScrollView, View, TouchableOpacity} from 'react-native';
-import {ListItem as BaseItem, Text} from 'native-base';
-import {Ionicons as Icon} from '@expo/vector-icons';
-import {SelectedIngredients} from '../context/SelectedIngredients';
+import React, { useState, useContext } from 'react';
+import { StyleSheet, ScrollView, View, TouchableOpacity } from 'react-native';
+import { ListItem as BaseItem, Text } from 'native-base';
+import { Ionicons as Icon } from '@expo/vector-icons';
+import { SelectedIngredients } from '../context/SelectedIngredients';
 
 const AddIngredient = (props) => {
   const [quantity, setQuantity] = useState(props.quantity);
   const [ingredients, setIngredients] = useContext(SelectedIngredients);
+
+  const ingredientObject = (ingredient, info, key, quantity) => {
+    return {
+      name: ingredient,
+      key: key,
+      quantity: quantity,
+      calories: info.nf_calories,
+      carbs: info.nf_total_carbohydrate,
+      protein: info.nf_protein,
+    };
+  };
 
   const addNew = (name, data) => {
     let hits = 0;
@@ -20,13 +31,11 @@ const AddIngredient = (props) => {
         return item;
       });
       if (hits == 0) {
-        newList.push({
-          name: name,
-          key: ingredients.length.toString(),
-          quantity: quantity,
-          calories: data.nf_calories,
-          protein: data.nf_protein,
-        });
+        const key = ingredients.length.toString();
+        const ingredient = ingredientObject(name, data, key, quantity)
+        newList.push(
+          ingredient
+        );
       }
       setIngredients([]);
       setTimeout(() => {
@@ -36,25 +45,29 @@ const AddIngredient = (props) => {
       console.log('Updated List: \n', ingredients);
       hits = 0;
     } else {
-      setIngredients([{name: name, quantity: quantity, key: '0', calories: data.nf_calories, protein: data.nf_protein}]);
+      setIngredients([
+        ingredientObject(name, data, 0, quantity)
+      ]);
       props.navigation.navigate('CreateRecipe');
     }
   };
 
   return (
     <BaseItem margin={15} padding={15} justifyContent={'space-around'}>
-      <View style={{flexDirection: 'row', flex: 0.5, margin: 10}}>
+      <View style={{ flexDirection: 'row', flex: 0.5, margin: 10 }}>
         <View>
           <TouchableOpacity
             disabled={quantity > 0 ? false : true}
             style={styles.increment}
             onPress={() => {
               setQuantity(quantity - 1);
-            }}>
+            }}
+          >
             <Icon
               name={'md-remove-circle'}
               size={25}
-              color={quantity > 0 ? 'red' : 'grey'}></Icon>
+              color={quantity > 0 ? 'red' : 'grey'}
+            ></Icon>
           </TouchableOpacity>
         </View>
         <Text>{quantity}</Text>
@@ -63,28 +76,31 @@ const AddIngredient = (props) => {
           style={styles.increment}
           onPress={() => {
             setQuantity(quantity + 1);
-          }}>
+          }}
+        >
           <Icon name={'md-add-circle'} size={25} color={'green'}></Icon>
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={{flex: 4, margin: 10}}>
+      <ScrollView style={{ flex: 4, margin: 10 }}>
         <Text style={styles.text}>{props.ingredient}</Text>
       </ScrollView>
       <TouchableOpacity
         disabled={quantity > 0 ? false : true}
-        style={{flex: 1, margin: 10}}
+        style={{ flex: 1, margin: 10 }}
         onPress={() => {
           addNew(props.ingredient, props.data);
           // - props.ingredient
-        }}>
+        }}
+      >
         <View
           style={{
             backgroundColor: quantity > 0 ? 'green' : 'grey',
             elevation: 10,
-            flexDirection: 'column',
-          }}>
-          <Text style={{color: 'white', flex: 0.75}}>Add</Text>
+            flexDirection: 'column'
+          }}
+        >
+          <Text style={{ color: 'white', flex: 0.75 }}>Add</Text>
         </View>
       </TouchableOpacity>
     </BaseItem>
@@ -93,14 +109,14 @@ const AddIngredient = (props) => {
 
 const styles = StyleSheet.create({
   increment: {
-    padding: 5,
+    padding: 5
   },
   text: {
     fontSize: 20,
     flex: 1,
     fontFamily: 'Roboto',
-    textAlign: 'center',
-  },
+    textAlign: 'center'
+  }
 });
 
 export default AddIngredient;

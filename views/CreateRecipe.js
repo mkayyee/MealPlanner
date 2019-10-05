@@ -1,24 +1,39 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable max-len */
 /* global require */
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
-  ToolbarAndroid,
-  StatusBar,
+  Image,
   TextInput,
   ScrollView,
-  Button,
+  Button
 } from 'react-native';
 import PropTypes from 'prop-types';
 import IngredientItem from '../components/IngredientItem';
-import {Text, List, Card} from 'native-base';
-import {SelectedIngredients} from '../context/SelectedIngredients';
+import { Text, List, Card } from 'native-base';
+import { SelectedIngredients } from '../context/SelectedIngredients';
+import Constants from 'expo-constants';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
+import useRecipeForm from '../hooks/RecipeCreateHook';
 
 const CreateRecipe = (props) => {
-  const {navigation} = props;
+  const [file, setFile] = useState(null);
+  const { navigation } = props;
   const [ingredients, setIngredients] = useContext(SelectedIngredients);
+  const {
+    handleRecipeNameChange,
+    inputs,
+    errors,
+    handleInstructionsChange,
+    handleRecipeUpload,
+  } = useRecipeForm();
+
+  useEffect(() => {
+    console.log(inputs);
+  },)
 
   // Returns the total value of a chosen nutrient from all the selected ingredients
   // CreateRecipe currently takes only protein and calories as props so rest will have to be implemented
@@ -31,11 +46,56 @@ const CreateRecipe = (props) => {
     return Math.round(adder);
   };
 
+  const getPermissionAsync = async () => {
+    if (Constants.platform.ios) {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      if (status !== 'granted') {
+        alert('Sorry, we need camera roll permissions to make this work!');
+      }
+    }
+  };
+
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3]
+    });
+
+    if (!result.cancelled) {
+      setFile(result);
+      // setValidate({description: validated.description, title: validated.title, image: true});
+    }
+  };
+
+  useEffect(() => {
+    getPermissionAsync();
+  }, []);
+
   return (
     <ScrollView style={styles.container}>
-      <View style={{justifyContent: 'flex-start'}}>
+      <View style={{ marginTop: 10 }}>
+        <Button
+          block
+          onPress={pickImage}
+          color='green'
+          title='Select Image'
+        ></Button>
+        {file && (
+          <Image
+            source={{ uri: file.uri }}
+            style={{ width: '100%', height: 200, marginTop: 5 }}
+          />
+        )}
+      </View>
+      <View style={{ justifyContent: 'flex-start' }}>
         <Text style={styles.text}>Recipe</Text>
-        <TextInput fontSize={20} placeholder={'recipe name...'}></TextInput>
+        <TextInput 
+          fontSize={20} 
+          onChangeText={handleRecipeNameChange}
+          placeholder={'recipe name...'}>
+        </TextInput>
+        {errors.recipeName && <Text style={{color: 'red'}}>{errors.recipeName}</Text>}
         <Text style={styles.text}>Ingredients</Text>
         {ingredients.length != 1 ? (
           <Text>({ingredients.length} items)</Text>
@@ -50,7 +110,8 @@ const CreateRecipe = (props) => {
             margin={20}
             elevation={10}
             color={'green'}
-            title={'New Ingredient'}></Button>
+            title={'New Ingredient'}
+          ></Button>
           <ScrollView maxHeight={'50%'} nestedScrollEnabled={true}>
             <List
               dataArray={ingredients}
@@ -62,13 +123,15 @@ const CreateRecipe = (props) => {
                     protein={item.protein}
                     ingredient={item.name}
                     quantity={item.quantity}
+                    carbs={item.carbs}
                   />
                 </Card>
-              )}></List>
+              )}
+            ></List>
           </ScrollView>
           <Text style={styles.text}>Total Nutrients</Text>
           {ingredients.length > 0 && (
-            <ScrollView style={{maxHeight: '20%'}} nestedScrollEnabled={true}>
+            <ScrollView style={{ maxHeight: '20%' }} nestedScrollEnabled={true}>
               <Text>Calories: {getNutrient('calories')}</Text>
               <Text>Protein: {getNutrient('protein')}</Text>
             </ScrollView>
@@ -78,9 +141,20 @@ const CreateRecipe = (props) => {
           <ScrollView>
             <TextInput
               fontSize={20}
-              placeholder={'write instructions here...'}></TextInput>
+              onChangeText={handleInstructionsChange}
+              placeholder={'write instructions here...'}
+            ></TextInput>
           </ScrollView>
         </View>
+      </View>
+      <View style={{ marginTop: 30 }}>
+        <Button
+          block
+          onPress={() => {handleRecipeUpload(file, ingredients)}}
+          disabled={(file && errors.recipeName == null) ? false : true}
+          color={(file && errors.recipeName == null) ? 'green' : 'grey'}
+          title='Create Recipe'
+        ></Button>
       </View>
     </ScrollView>
   );
@@ -90,19 +164,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
   },
   toolbar: {
     flex: 1,
-    backgroundColor: '#e050ef',
+    backgroundColor: '#e050ef'
   },
   text: {
-    fontSize: 25,
-  },
+    fontSize: 25
+  }
 });
 
 CreateRecipe.propTypes = {
-  navigation: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired
 };
 
 export default CreateRecipe;

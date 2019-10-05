@@ -1,10 +1,9 @@
-/* eslint-disable linebreak-style */
 import {useState} from 'react';
 
 const useRecipeSearch = () => {
   const [input, setInput] = useState({letters: ''});
   const handleSearchChange = (text) => {
-    setInput((input) => ({
+    setInput((inputs) => ({
       ...input,
       letters: text,
     }));

@@ -2,7 +2,7 @@ import React, {useEffect, useState, useContext} from 'react';
 import {View, TextInput} from 'react-native';
 import PropTypes from 'prop-types';
 import mediaAPI from '../hooks/ApiHooks';
-import useRecipeSearch from '../hooks/RecipeHook';
+import useRecipeSearch from '../hooks/RecipeSearchHook';
 import {List} from 'native-base';
 import AddIngredient from '../components/AddIngredients';
 import {SelectedIngredients} from '../context/SelectedIngredients';

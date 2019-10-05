@@ -2,12 +2,12 @@ import React from 'react';
 import {StyleSheet, View, AsyncStorage, Image} from 'react-native';
 import { Container, Title, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import PropTypes from 'prop-types';
+import RecipeList from '../components/RecipeList';
 
 import mediaAPI from '../hooks/ApiHooks';
 
 const Home = (props) => {
-
-  
+  const {navigation} = props;
   const {userToContext} = mediaAPI();
   userToContext().then((user) => {
     console.log('usercontext', user);
@@ -26,9 +26,10 @@ const Home = (props) => {
         </Body>
         <Right />
       </Header>
+      <RecipeList navigation={navigation}></RecipeList>
+      { /*
       <Card style={{flex: 0}}>
             <CardItem>
-              
             <Body>
                 <Image source={require("../pictures/salad.jpeg")} style={{height: 340, width: 340}}/>
                 <Thumbnail source={require("../pictures/mia.jpg")} style={{borderRadius: 50,
@@ -43,11 +44,10 @@ const Home = (props) => {
                 <Text style= {{fontWeight:"bold",fontSize:27,  color:"white", position:"absolute", top: 275, left: 20, right: 0, bottom: 0, justifyContent: 'center', alignItems: 'center'}}>
                   Calories
                 </Text>
-              </Body>
-                
+              </Body>   
             </CardItem>
        </Card>     
-       
+       */}
      </Container>
     );
   };
