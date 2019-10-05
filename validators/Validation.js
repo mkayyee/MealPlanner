@@ -36,6 +36,15 @@ const validation = {
         message: '^Please enter a valid email address'
       }
     },
+    recipe: {
+      presence: {
+        message: '^Recipe name'
+      },
+      length: {
+        minimum: 1,
+        message: '^The recipe must have a name'
+      }
+    },
   
   };
   

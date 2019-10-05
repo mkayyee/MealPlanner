@@ -103,6 +103,9 @@ const IngredientItem = (props) => {
               <Text style={styles.text}>
                 Protein:{Math.round(props.protein * props.quantity)}g
               </Text>
+              <Text style={styles.text}>
+                Carbohydrates:{Math.round(props.carbs * props.quantity)}g
+              </Text>
             </View>
           </Card>
         </TouchableOpacity>
