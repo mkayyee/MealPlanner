@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import validate from 'validate.js';
 import validation from '../validators/Validation';
 import mediaAPI from './ApiHooks';
+import {RecipeContext} from '../context/RecipeContext';
 
 const useRecipeForm = () => {
-  const {uploadRecipe} = mediaAPI();
-  const [inputs, setInputs] = useState({});
+  const {uploadRecipe, reloadRecipes} = mediaAPI();
+  const [recipes, setRecipes] = useContext(RecipeContext);
+  const [inputs, setInputs] = useState({recipeName: '', instructions: ''});
   const [errors, setErrors] = useState({});
 
   const handleRecipeNameChange = (text) => {
@@ -27,7 +29,12 @@ const useRecipeForm = () => {
     }));
   };
 
-  const handleRecipeUpload = (file, ingredients) => {
+  const clearInputs = (setFile) => {
+    setInputs({});
+    setFile(null);
+  };
+
+  const handleRecipeUpload = (file, ingredients, navigation) => {
     const nutrientsObject = {protein: 0, carbs: 0, calories: 0, ingredients: []}
     // Total nutrient values turned into an object
     ingredients.map((elem, index) => {
@@ -56,10 +63,16 @@ const useRecipeForm = () => {
     fd.append('title', inputs.recipeName);
     fd.append('description', JSON.stringify(descriptionObject));
 
-    console.log(descriptionObject);
-
-    const response = uploadRecipe(fd);
-    console.log(response);
+    uploadRecipe(fd).then((response) => {
+      console.log('response from Recipe Creation: \n', response);
+      setRecipes([]);
+      setTimeout(() => {
+        reloadRecipes(setRecipes);
+        navigation.navigate('Home');
+      }, 2000)
+    }).catch((err) => {
+      console.log(err);
+    });
   };
 
   return {
@@ -67,7 +80,8 @@ const useRecipeForm = () => {
     inputs,
     errors,
     handleInstructionsChange,
-    handleRecipeUpload
+    handleRecipeUpload,
+    clearInputs,
   };
 };
 export default useRecipeForm;

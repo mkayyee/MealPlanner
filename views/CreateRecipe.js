@@ -8,7 +8,8 @@ import {
   Image,
   TextInput,
   ScrollView,
-  Button
+  Button,
+  TouchableOpacity
 } from 'react-native';
 import PropTypes from 'prop-types';
 import IngredientItem from '../components/IngredientItem';
@@ -18,6 +19,7 @@ import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import useRecipeForm from '../hooks/RecipeCreateHook';
+import { FontAwesome as RemoveIcon } from '@expo/vector-icons';
 
 const CreateRecipe = (props) => {
   const [file, setFile] = useState(null);
@@ -29,11 +31,10 @@ const CreateRecipe = (props) => {
     errors,
     handleInstructionsChange,
     handleRecipeUpload,
+    clearInputs,
   } = useRecipeForm();
 
-  useEffect(() => {
-    console.log(inputs);
-  },)
+  useEffect(() => {});
 
   // Returns the total value of a chosen nutrient from all the selected ingredients
   // CreateRecipe currently takes only protein and calories as props so rest will have to be implemented
@@ -68,13 +69,25 @@ const CreateRecipe = (props) => {
     }
   };
 
+  const resetAll = () => {
+    clearInputs(setFile);
+    setIngredients([]);
+  }
+
   useEffect(() => {
     getPermissionAsync();
   }, []);
 
   return (
     <ScrollView style={styles.container}>
-      <View style={{ marginTop: 10 }}>
+      <View style={{ marginTop: 10}}>
+        <Button
+          block
+          onPress={() => 
+            resetAll()
+          }
+          title='Reset'
+        ></Button>
         <Button
           block
           onPress={pickImage}
@@ -82,20 +95,40 @@ const CreateRecipe = (props) => {
           title='Select Image'
         ></Button>
         {file && (
-          <Image
-            source={{ uri: file.uri }}
-            style={{ width: '100%', height: 200, marginTop: 5 }}
-          />
+          <View style={{ position: 'relative' }}>
+            <Image
+              source={{ uri: file.uri }}
+              style={{ width: '100%', height: 200, marginTop: 5 }}
+            />
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                alignSelf: 'flex-end',
+                padding: 0,
+                margin: 0,
+                right: 5,
+                top: 5
+              }}
+              onPress={() => {
+                setFile(null);
+              }}
+            >
+              <RemoveIcon name={'remove'} size={25} color={'red'}></RemoveIcon>
+            </TouchableOpacity>
+          </View>
         )}
       </View>
       <View style={{ justifyContent: 'flex-start' }}>
         <Text style={styles.text}>Recipe</Text>
-        <TextInput 
-          fontSize={20} 
+        <TextInput
+          value={inputs.recipeName}
+          fontSize={20}
           onChangeText={handleRecipeNameChange}
-          placeholder={'recipe name...'}>
-        </TextInput>
-        {errors.recipeName && <Text style={{color: 'red'}}>{errors.recipeName}</Text>}
+          placeholder={'recipe name...'}
+        ></TextInput>
+        {errors.recipeName && (
+          <Text style={{ color: 'red' }}>{errors.recipeName}</Text>
+        )}
         <Text style={styles.text}>Ingredients</Text>
         {ingredients.length != 1 ? (
           <Text>({ingredients.length} items)</Text>
@@ -140,6 +173,7 @@ const CreateRecipe = (props) => {
           <Text style={styles.text}>Instructions</Text>
           <ScrollView>
             <TextInput
+              value={inputs.instructions}
               fontSize={20}
               onChangeText={handleInstructionsChange}
               placeholder={'write instructions here...'}
@@ -150,9 +184,12 @@ const CreateRecipe = (props) => {
       <View style={{ marginTop: 30 }}>
         <Button
           block
-          onPress={() => {handleRecipeUpload(file, ingredients)}}
-          disabled={(file && errors.recipeName == null) ? false : true}
-          color={(file && errors.recipeName == null) ? 'green' : 'grey'}
+          onPress={() => {
+            handleRecipeUpload(file, ingredients, navigation);
+            resetAll();
+          }}
+          disabled={file && errors.recipeName == null ? false : true}
+          color={file && errors.recipeName == null ? 'green' : 'grey'}
           title='Create Recipe'
         ></Button>
       </View>
