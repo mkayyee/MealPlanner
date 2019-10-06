@@ -21,8 +21,13 @@ const Profile = (props) => {
     await AsyncStorage.clear();
     props.navigation.navigate('Auth');
   };
+  
+  const day = new Date().getDate();
+      const month = new Date().getMonth() + 1;
+      const year = new Date().getFullYear();
 
-   [date,setDate] = useState();
+
+   [date,setDate] = useState(day +"."+month+"."+year);
 
   return (
     <Container>

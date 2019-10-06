@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, AsyncStorage, Image} from 'react-native';
+import {StyleSheet, View, AsyncStorage, Image, TextInput} from 'react-native';
 import { Container, Title, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import PropTypes from 'prop-types';
 import RecipeList from '../components/RecipeList';
@@ -15,15 +15,25 @@ const Home = (props) => {
 
     return (
       <Container>
-      <Header style={{backgroundColor:"white"}}>
+    <Header style={{backgroundColor:"white"}}>
         <Left> 
         </Left>
-        <Image source={require("../pictures/logo.jpg")} style={{height: 30, width: 30, marginTop:10}} />
-        <Body>
-        <Right>
-          <Title style={{marginTop:15, color:"black"}}>Meal Planner</Title>
-        </Right>         
-        </Body>
+
+        <View style ={{flexDirection:"row", borderColor:"lightgrey",
+      borderWidth:1, width:300, height:30, borderRadius:10, marginTop:10}}>
+       
+        <Icon style ={{color:"#999", fontSize:18, margin:7}}
+        name='search'
+        color='lightgrey'
+        size={5}
+        />
+        <TextInput style={styles.inputText}
+                  placeholder={'Search recipes'}
+                  placeholderTextColor={'#999'}
+                  autoCorrect={false}
+        />
+              
+        </View>
         <Right />
       </Header>
       <RecipeList navigation={navigation}></RecipeList>
@@ -64,6 +74,14 @@ const Home = (props) => {
       marginBottom:10, 
       justifyContent:"center"
     },
+
+    inputText: {
+      flex:1,
+      fontSize: 18,
+      marginTop:3,
+      color: '#999',
+    },
+    
   });
 
 
