@@ -150,12 +150,14 @@ const mediaAPI = () => {
 
       // Add MealPlanner tag into the file
       addTag(json.file_id, 'MealPlanner');
+    } else {
+      console.log(response);
     }
     return json;
   };
 
   const uploadRecipe = async (formData) => {
-    return fetchUploadUrl('recipe: \n', formData).then((json) => {
+    return fetchUploadUrl('media', formData).then((json) => {
       return json;
     });
   };
@@ -188,6 +190,17 @@ const mediaAPI = () => {
     return [recipes, loading];
   };
 
+  const reloadRecipes = (setMedia, setMyMedia) => {
+    fetchGetUrl(apiUrl +'tags/' + 'MealPlanner').then((json) => {
+      setMedia(json);
+    });
+    /*
+    fetchGetUrl(apiUrl +'media/user').then((json) => {
+      setMyMedia(json);
+    });
+    */
+  };
+
   return {
     signInAsync,
     registerAsync,
@@ -197,7 +210,8 @@ const mediaAPI = () => {
     getAvatar,
     uploadRecipe,
     getRecipes,
-    getThumbnail
+    getThumbnail,
+    reloadRecipes,
   };
 };
 
