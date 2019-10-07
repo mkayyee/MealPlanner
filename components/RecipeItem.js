@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   ListItem as BaseListItem,
@@ -10,50 +10,91 @@ import {
   H2,
   H3,
   Text,
+  Card,
+  CardItem
 } from 'native-base';
 import mediaAPI from '../hooks/ApiHooks';
+import { Image, TouchableOpacity } from 'react-native';
 
 const RecipeItem = (props) => {
-  const {navigation, singleRecipe} = props;
-  const {getThumbnail} = mediaAPI();
+  //const {userInfo, setUserInfo} = useState({username: ''});
+  const { navigation, singleRecipe } = props;
+  const { getThumbnail, getUserInfo, getAvatar } = mediaAPI();
   const tn = getThumbnail(singleRecipe.file_id);
   const recipeInfo = JSON.parse(singleRecipe.description);
 
   useEffect(() => {
-      //console.log('description from RecipeItem: \n', recipeInfo);
-      //console.log('calories: \n', recipeInfo.totalNutrients.calories);
-      // etc...
-  }, )
+    //setUserInfo(getUserInfo(singleRecipe.user_id));
+    //console.log('description from RecipeItem: \n', recipeInfo);
+    //console.log('calories: \n', recipeInfo.totalNutrients.calories);
+    // etc...
+  });
   return (
-    <BaseListItem thumbnail>
-      <Left>
-        {tn && <Thumbnail square large source={{uri: 'http://media.mw.metropolia.fi/wbma/uploads/' + tn.w160}} />
-        }
-      </Left>
-      <Body>
-        <H2>{singleRecipe.title}</H2>
-        <H3>Instructions</H3>
-        <Text numberOfLines={20}>{recipeInfo.instructions}</Text>
-        <Text>Calories: {recipeInfo.totalNutrients.calories}</Text>
-      </Body>
-      <Right>
-        <Button
-          onPress={
-            () => {
-              navigation.push('Single', {file: singleRecipe});
-            }
-          }
-        >
-          <Text>View</Text>
-        </Button>
-      </Right>
-    </BaseListItem>
+    <Card style={{ flex: 0 }}>
+      <TouchableOpacity onPress={() => {console.log('Navigate to single here with:\n', recipeInfo)}}>
+        <CardItem>
+          <Body>
+            <Image
+              source={{
+                uri: 'http://media.mw.metropolia.fi/wbma/uploads/' + tn.w160
+              }}
+              style={{ height: 340, width: '100%' }}
+            />
+            <Thumbnail
+              source={{ uri: getAvatar(singleRecipe.user_id) }}
+              style={{
+                borderRadius: 50,
+                width: 40,
+                height: 40,
+                position: 'absolute',
+                top: 15,
+                left: 5,
+                right: 0,
+                bottom: 0
+              }}
+            />
+            <Text
+              style={{
+                fontWeight: 'bold',
+                color: 'white',
+                position: 'absolute',
+                top: 22,
+                left: 55,
+                right: 0,
+                bottom: 0,
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              by {getUserInfo(singleRecipe.user_id).username}
+            </Text>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                fontSize: 30,
+                color: 'white',
+                position: 'absolute',
+                top: 230,
+                left: 20,
+                right: 0,
+                bottom: 0,
+                justifyContent: 'center',
+                alignItems: 'center',
+                maxWidth: '90%'
+              }}
+            >
+              {singleRecipe.title}
+            </Text>
+          </Body>
+        </CardItem>
+      </TouchableOpacity>
+    </Card>
   );
 };
 
 RecipeItem.propTypes = {
   singleRecipe: PropTypes.object,
-  navigation: PropTypes.object,
+  navigation: PropTypes.object
 };
 
 export default RecipeItem;
