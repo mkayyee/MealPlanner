@@ -42,7 +42,8 @@ const validation = {
       },
       length: {
         minimum: 1,
-        message: '^The recipe must have a name'
+        message: '^The recipe must have a name (max 35 characters)',  
+        maximum: 35,
       }
     },
     instructions: {

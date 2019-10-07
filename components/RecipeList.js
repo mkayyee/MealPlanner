@@ -11,7 +11,7 @@ const RecipeList = (props) => {
   console.log(loading);
   console.log('media', recipes);
   return (
-    <BaseList
+    <BaseList style={{marginLeft:0, marginRight:0}}
       dataArray={recipes}
       renderRow={(item) =>
         <RecipeItem navigation={navigation} singleRecipe={item} />}

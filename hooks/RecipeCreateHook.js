@@ -5,7 +5,7 @@ import mediaAPI from './ApiHooks';
 import { RecipeContext } from '../context/RecipeContext';
 
 const initialErrors = {
-  recipeNameError: 'The recipe must have a name',
+  recipeNameError: 'The recipe must have a name (max 35 characters)',
   instructionsError: 'Instructions minimum length is 10 characters'
 };
 const initialInputs = { recipeName: '', instructions: '' };
@@ -46,7 +46,7 @@ const useRecipeForm = () => {
     setFile(null);
   };
 
-  const handleRecipeUpload = (file, ingredients, navigation) => {
+  const handleRecipeUpload = (file, ingredients, navigation, resetAll) => {
     const nutrientsObject = {
       protein: 0,
       carbs: 0,
@@ -100,6 +100,7 @@ const useRecipeForm = () => {
         console.log('response from Recipe Creation: \n', response);
         setRecipes([]);
         setTimeout(() => {
+          resetAll();
           reloadRecipes(setRecipes);
           navigation.navigate('Home');
         }, 2000);

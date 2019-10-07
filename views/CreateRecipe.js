@@ -234,8 +234,7 @@ const CreateRecipe = (props) => {
           <Button
             block
             onPress={() => {
-              handleRecipeUpload(file, ingredients, navigation);
-              resetAll();
+              handleRecipeUpload(file, ingredients, navigation, resetAll);
             }}
             disabled={validateAll() ? false : true}
             color={validateAll() ? 'green' : 'grey'}
