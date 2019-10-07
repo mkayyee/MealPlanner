@@ -20,8 +20,8 @@ const fetchGetUrl = async (url) => {
 };
 
 const fetchPostUrl = async (url, data) => {
-  //console.log('fetchPostUrl', url);
-  //console.log('fetchPostUrl data', data);
+  console.log(JSON.stringify(data));
+  console.log('fetchPostUrl data', data);
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -29,8 +29,10 @@ const fetchPostUrl = async (url, data) => {
     },
     body: JSON.stringify(data)
   });
-  const json = await response.json();
-  //console.log('fetchPostUrl json', json);
+  const json = await response.json().catch((error) => {
+    console.log(error);
+  });;
+  console.log('fetchPostUrl json', json);
   return json;
 };
 
@@ -216,6 +218,24 @@ const mediaAPI = () => {
     });
     */
   };
+  //  Example: const intakeObject = {id: {whatever.user_id}, data: {calories: 12345g, protein: 50g, carbs: 100g}};
+  //  addIdealIntakes(intakeObject);
+  const addIdealIntakes = (dataObject) => {
+    if (dataObject.id && dataObject.data) {
+      fetchPostUrl(foodUrl + 'addideal', dataObject).then((json) => {
+        return json;
+      });
+    } else {
+      console.log('The parameter for this function should be in the form of: {user_id: 234234523, data: {calories: 12345623, protein: 234, ... etc}}')
+    }
+  };
+  // Example: getIdealIntakes(2440);   ---> returns an object containing user's recommended nutrient intakes
+  const getIdealIntakes = (userID) => {
+    fetchGetUrl(foodUrl + 'ideals/' + userID).then((json) => {
+      console.log(JSON.parse(json[0]));
+      return json;
+    });
+  };
 
   return {
     signInAsync,
@@ -228,7 +248,9 @@ const mediaAPI = () => {
     getRecipes,
     getThumbnail,
     reloadRecipes,
-    getUserInfo
+    getUserInfo,
+    addIdealIntakes,
+    getIdealIntakes,
   };
 };
 
