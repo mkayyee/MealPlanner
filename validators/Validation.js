@@ -45,6 +45,15 @@ const validation = {
         message: '^The recipe must have a name'
       }
     },
+    instructions: {
+      presence: {
+        message: '^Instructions here'
+      },
+      length: {
+        minimum: 10,
+        message: '^Instructions minimum length is 10 characters'
+      }
+    },
   
   };
   
