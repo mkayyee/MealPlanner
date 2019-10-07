@@ -22,6 +22,7 @@ const IngredientItem = (props) => {
       return item.name != name;
     });
     setIngredients(newList);
+    console.log('Removed ingredient:\n', name)
     console.log('Updated List: \n', newList);
   };
 
@@ -73,6 +74,8 @@ const IngredientItem = (props) => {
             </TouchableOpacity>
           </View>
           <View style={{flexDirection: 'row'}}>
+            <Text style={styles.ingredientName}>{props.ingredient}</Text>
+            {/*
             <TouchableOpacity>
               <Card
                 style={{
@@ -86,6 +89,7 @@ const IngredientItem = (props) => {
                 </CardItem>
               </Card>
             </TouchableOpacity>
+              */}
           </View>
         </View>
         <TouchableOpacity>
@@ -105,6 +109,18 @@ const IngredientItem = (props) => {
               </Text>
               <Text style={styles.text}>
                 Carbohydrates:{Math.round(props.carbs * props.quantity)}g
+              </Text>
+              <Text style={styles.text}>
+                Fat:{Math.round(props.fat * props.quantity)}g
+              </Text>
+              <Text style={styles.text}>
+                Saturated fat:{Math.round(props.saturated_fat * props.quantity)}g
+              </Text>
+              <Text style={styles.text}>
+                Sodium:{Math.round(props.sodium * props.quantity)}mg
+              </Text>
+              <Text style={styles.text}>
+                Sugars:{Math.round(props.sugars* props.quantity)}g
               </Text>
             </View>
           </Card>
@@ -139,6 +155,11 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 15,
+    fontFamily: 'Roboto',
+    padding: 5,
+  },
+  ingredientName: {
+    fontSize: 20,
     fontFamily: 'Roboto',
     padding: 5,
   },

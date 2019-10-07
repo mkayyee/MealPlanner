@@ -9,6 +9,19 @@ const AddIngredient = (props) => {
   const [ingredients, setIngredients] = useContext(SelectedIngredients);
 
   const ingredientObject = (ingredient, info, key, quantity) => {
+    const allergens = [];
+    /* 
+    // Checking for allergens and adding into the object if any
+    for (let property in info) {
+      if (property.startsWith('allergen')) {
+        if (info[property] != null) {
+          console.log(info[property]);
+          allergens.push('Contains ' + property.split('allergen_contains_')[1]);
+          console.log(property.split('allergen_contains_')[1]);
+        }
+      }
+    };
+    */
     return {
       name: ingredient,
       key: key,
@@ -16,12 +29,18 @@ const AddIngredient = (props) => {
       calories: info.nf_calories,
       carbs: info.nf_total_carbohydrate,
       protein: info.nf_protein,
+      sugars: info.nf_sugars,
+      sodium: info.nf_sodium,
+      fat: info.nf_total_fat,
+      saturated_fat: info.nf_saturated_fat,
+      allergens: allergens,
     };
   };
 
   const addNew = (name, data) => {
     let hits = 0;
     if (ingredients.length > 0) {
+      // If already an ingredient with the same name -> increases quantity
       const newList = ingredients.map((item, index) => {
         if (item.name == name) {
           item.quantity += quantity;
@@ -30,6 +49,7 @@ const AddIngredient = (props) => {
         }
         return item;
       });
+      // Create a new ingredient otherwise
       if (hits == 0) {
         const key = ingredients.length.toString();
         const ingredient = ingredientObject(name, data, key, quantity)
@@ -39,11 +59,14 @@ const AddIngredient = (props) => {
       }
       setIngredients([]);
       setTimeout(() => {
+        console.log(`Ingredient ${name} added or updated.`)
+        console.log('Updated list:\n', newList);
         setIngredients(newList);
         props.navigation.navigate('CreateRecipe');
       }, 0);
-      console.log('Updated List: \n', ingredients);
       hits = 0;
+
+      // New list with 1 ingredient
     } else {
       setIngredients([
         ingredientObject(name, data, 0, quantity)
