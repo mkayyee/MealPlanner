@@ -226,7 +226,7 @@ const mediaAPI = () => {
         return json;
       });
     } else {
-      console.log('The parameter for this function should be in the form of: {user_id: 234234523, data: {calories: 12345623, protein: 234, ... etc}}')
+      console.log('The parameter for this function should be in the form of: {id: 234234523, data: {calories: 12345623, protein: 234, ... etc}}')
     }
   };
   // Example: getIdealIntakes(2440);   ---> returns an object containing user's recommended nutrient intakes
