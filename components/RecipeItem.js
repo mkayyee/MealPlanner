@@ -14,7 +14,7 @@ import {
   CardItem
 } from 'native-base';
 import mediaAPI from '../hooks/ApiHooks';
-import { Image, TouchableOpacity } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 
 const RecipeItem = (props) => {
   //const {userInfo, setUserInfo} = useState({username: ''});
@@ -30,61 +30,97 @@ const RecipeItem = (props) => {
     // etc...
   });
   return (
-    <Card style={{ flex: 0 }}>
-      <TouchableOpacity onPress={() => {console.log('Navigate to single here with:\n', recipeInfo)}}>
-        <CardItem>
-          <Body>
+    <Card style={{ marginLeft: 0, marginRight: 0 }}>
+      <TouchableOpacity
+        onPress={() => {
+          console.log('Navigate to single here with:\n', recipeInfo);
+        }}
+      >
+        <CardItem style={{ marginLeft: 0, marginRight: 0 }}>
+          <Body style={{ marginLeft: 0, marginRight: 0 }}>
             <Image
               source={{
                 uri: 'http://media.mw.metropolia.fi/wbma/uploads/' + tn.w160
               }}
               style={{ height: 340, width: '100%' }}
             />
-            <Thumbnail
-              source={{ uri: getAvatar(singleRecipe.user_id) }}
-              style={{
-                borderRadius: 50,
-                width: 40,
-                height: 40,
-                position: 'absolute',
-                top: 15,
-                left: 5,
-                right: 0,
-                bottom: 0
-              }}
-            />
+            <TouchableOpacity style={{
+                  position: 'absolute',
+                  top: 15,
+                  left: 5,
+                  right: 0,
+                  bottom: 0
+                }}>
+              <Thumbnail
+                source={{ uri: getAvatar(singleRecipe.user_id) }}
+                style={{
+                  borderRadius: 50,
+                  width: 40,
+                  height: 40,
+                }}
+              />
+            </TouchableOpacity>
             <Text
               style={{
                 fontWeight: 'bold',
                 color: 'white',
                 position: 'absolute',
+                fontSize: 15,
                 top: 22,
                 left: 55,
                 right: 0,
                 bottom: 0,
+                textShadowRadius: 10,
+                textShadowOffset: { width: -1.5, height: 1.5 },
+                textShadowColor: 'black',
                 justifyContent: 'center',
                 alignItems: 'center'
               }}
             >
               by {getUserInfo(singleRecipe.user_id).username}
             </Text>
-            <Text
+            <View
               style={{
-                fontWeight: 'bold',
-                fontSize: 30,
-                color: 'white',
                 position: 'absolute',
                 top: 230,
-                left: 20,
+                left: 10,
                 right: 0,
                 bottom: 0,
-                justifyContent: 'center',
-                alignItems: 'center',
-                maxWidth: '90%'
+                marginRight: 20
               }}
             >
-              {singleRecipe.title}
-            </Text>
+              <View style={{ position: 'relative' }}>
+                <Text
+                  style={{
+                    fontWeight: 'bold',
+                    fontSize: 25,
+                    color: 'white',
+                    lineHeight: 25,
+                    textShadowRadius: 10,
+                    textShadowOffset: { width: -1.5, height: 1.5 },
+                    textShadowColor: 'black',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    bottom: 5
+                  }}
+                >
+                  {singleRecipe.title}
+                </Text>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontWeight: 'bold',
+                    textShadowRadius: 10,
+                    textShadowOffset: { width: -1.5, height: 1.5 },
+                    textShadowColor: 'black',
+                    bottom: 10,
+                    left: 30
+                  }}
+                >
+                  Calories: {recipeInfo.totalNutrients.calories}kcal
+                </Text>
+              </View>
+            </View>
           </Body>
         </CardItem>
       </TouchableOpacity>
