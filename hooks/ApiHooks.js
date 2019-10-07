@@ -106,16 +106,32 @@ const mediaAPI = () => {
     return [ingredients];
   };
 
-  const getAvatar = (user) => {
+  const getAvatar = (id) => {
     const [avatar, setAvatar] = useState('http://placekitten.com/100/100');
     //console.log('avatar', apiUrl + 'tags/avatar_' + user.user_id);
     useEffect(() => {
-      fetchGetUrl(apiUrl + 'tags/avatar_' + user.user_id).then((json) => {
+      fetchGetUrl(apiUrl + 'tags/avatar_' + id).then((json) => {
         //console.log('avatarjson', json[0].filename);
-        setAvatar(apiUrl + 'uploads/' + json[0].filename);
+        if (json[0] != undefined) {
+          setAvatar(apiUrl + 'uploads/' + json[0].filename);
+        }
       });
     }, []);
     return avatar;
+  };
+
+  const getUserInfo = (userId) => {
+    const [userInfo, setUserInfo] = useState({});
+    useEffect(() => {
+      fetchGetUrl(apiUrl + 'users/' + userId)
+        .then((json) => {
+          setUserInfo(json);
+        })
+        .catch((error) => {
+          console.log(console.error);
+        });
+    }, []);
+    return userInfo;
   };
 
   const userToContext = async () => {
@@ -191,7 +207,7 @@ const mediaAPI = () => {
   };
 
   const reloadRecipes = (setMedia, setMyMedia) => {
-    fetchGetUrl(apiUrl +'tags/' + 'MealPlanner').then((json) => {
+    fetchGetUrl(apiUrl + 'tags/' + 'MealPlanner').then((json) => {
       setMedia(json);
     });
     /*
@@ -212,6 +228,7 @@ const mediaAPI = () => {
     getRecipes,
     getThumbnail,
     reloadRecipes,
+    getUserInfo
   };
 };
 

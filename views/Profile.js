@@ -50,7 +50,7 @@ const Profile = (props) => {
                   <Text style ={{fontSize:25}}>{user.username}</Text>
                   <Text note>{user.email}</Text>
                 </Body>
-                <Thumbnail source={{uri: getAvatar(user)}} style={{borderRadius: 50,
+                <Thumbnail source={{uri: getAvatar(user.user_id)}} style={{borderRadius: 50,
                 width: 100,
                 height: 100,}} />
               </Left>
