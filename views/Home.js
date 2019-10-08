@@ -1,23 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, AsyncStorage, Image, TextInput } from 'react-native';
-import {
-  Container,
-  Header,
-  Icon,
-  Left,
-  Right,
-  Text,
-} from 'native-base';
+import { Container, Header, Icon, Left, Right, Text } from 'native-base';
 import PropTypes from 'prop-types';
 import RecipeList from '../components/RecipeList';
+import HomeDropdown from '../components/HomeDropdown';
+import { UserContext } from '../context/UserContext';
 
 import mediaAPI from '../hooks/ApiHooks';
 
 const Home = (props) => {
+  const [user, setUser] = useContext(UserContext);
   const { navigation } = props;
-  const { userToContext } = mediaAPI();
-  userToContext().then((user) => {
-    console.log('usercontext', user);
+  const { getIdealIntakes } = mediaAPI();
+  const [ideals, setIdeals] = useState(null);
+
+  // Retreives user data from the AsyncStorage and make's
+  // A call, with the user id to the API to get info about user's ideal nutrient take
+  const getUserData = async () => {
+    const data = await AsyncStorage.getItem('user');
+    if (user == null) {
+      setUser(JSON.parse(data));
+    }
+    if (ideals == null) {
+      getIdeals = getIdealIntakes(JSON.parse(data).user_id, setIdeals);
+    } else {
+      if (user.ideals == undefined) {
+        setUser(() => ({
+          ...user,
+          ideals: ideals
+        }));
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (user && user.ideals != undefined) {
+      console.log(user);
+    }
+    getUserData();
   });
 
   return (
@@ -48,8 +68,15 @@ const Home = (props) => {
             autoCorrect={false}
           />
         </View>
-        <Right />
+        <Right>
+          <HomeDropdown ideals={ideals} navigation={navigation}></HomeDropdown>
+        </Right>
       </Header>
+      {ideals && (
+        <Text style={{ textAlign: 'center' }}>
+          Your ideal daily calorie intake: {ideals.calories} kcal
+        </Text>
+      )}
       <RecipeList navigation={navigation}></RecipeList>
     </Container>
   );

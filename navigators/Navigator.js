@@ -14,6 +14,7 @@ import MyRecipes from '../views/MyRecipes';
 import Single from '../views/Single';
 import CreateRecipe from '../views/CreateRecipe';
 import Ingredients from '../views/Ingredients';
+import BMRCalculator from '../components/BMRCalculator';
 
 const TabNavigator = createBottomTabNavigator(
   {
@@ -59,6 +60,9 @@ const StackNavigator = createStackNavigator({
   },
   Ingredients: {
     screen: Ingredients,
+  },
+  BMRCalculator: {
+    screen: BMRCalculator,
   },
 });
 

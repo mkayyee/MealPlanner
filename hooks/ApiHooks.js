@@ -31,7 +31,7 @@ const fetchPostUrl = async (url, data) => {
   });
   const json = await response.json().catch((error) => {
     console.log(error);
-  });;
+  });
   console.log('fetchPostUrl json', json);
   return json;
 };
@@ -200,7 +200,6 @@ const mediaAPI = () => {
     // Fetch all media files with MealPlanner tag
     useEffect(() => {
       fetchGetUrl(apiUrl + 'tags/' + 'MealPlanner').then((json) => {
-        console.log(json);
         setRecipes(json);
         setLoading(false);
       });
@@ -226,15 +225,29 @@ const mediaAPI = () => {
         return json;
       });
     } else {
-      console.log('The parameter for this function should be in the form of: {id: 234234523, data: {calories: 12345623, protein: 234, ... etc}}')
+      console.log(
+        'The parameter for this function should be in the form of: {id: 234234523, data: {calories: 12345623, protein: 234, ... etc}}\nYour input:\n', dataObject      );
     }
   };
-  // Example: getIdealIntakes(2440);   ---> returns an object containing user's recommended nutrient intakes
-  const getIdealIntakes = (userID) => {
-    fetchGetUrl(foodUrl + 'ideals/' + userID).then((json) => {
-      console.log(JSON.parse(json[0]));
-      return json;
-    });
+  // Example: getIdealIntakes(2440);   ---> returns an object containing user's
+  // recommended nutrient intakes or null if the user doesn't have them calculated
+  const getIdealIntakes = (userID, setIdeals) => {
+    fetchGetUrl(foodUrl + 'ideals/' + userID)
+      .then((json) => {
+        if (json != undefined && json[0] != undefined) {
+          if (JSON.parse(json[0].data)) {
+            setIdeals(JSON.parse(json[0].data))
+            return (JSON.parse(json[0].data));
+          } else {
+            return null;
+          }
+        } else {
+          return (null);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return {
@@ -250,7 +263,7 @@ const mediaAPI = () => {
     reloadRecipes,
     getUserInfo,
     addIdealIntakes,
-    getIdealIntakes,
+    getIdealIntakes
   };
 };
 

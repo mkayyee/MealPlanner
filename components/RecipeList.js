@@ -8,8 +8,6 @@ const RecipeList = (props) => {
   const {navigation} = props;
   const {getRecipes} = mediaAPI();
   const [recipes, loading] = getRecipes();
-  console.log(loading);
-  console.log('media', recipes);
   return (
     <BaseList style={{marginLeft:0, marginRight:0}}
       dataArray={recipes}

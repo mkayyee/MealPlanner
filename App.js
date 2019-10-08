@@ -11,6 +11,7 @@ import Welcome from './views/Welcome';
 import Navigator from './navigators/Navigator';
 import { MediaProvider } from './context/MediaContext';
 import { RecipeProvider } from './context/RecipeContext';
+import { UserProvider } from './context/UserContext';
 
 const App = () => {
   const [isReady, setIsReady] = useState(false);
@@ -34,15 +35,17 @@ const App = () => {
   }
 
   return (
-    <RecipeProvider>
-      <MediaProvider>
-        <IngredientProvider>
-          <SIProvider>
-            <Navigator />
-          </SIProvider>
-        </IngredientProvider>
-      </MediaProvider>
-    </RecipeProvider>
+    <UserProvider>
+      <RecipeProvider>
+        <MediaProvider>
+          <IngredientProvider>
+            <SIProvider>
+              <Navigator />
+            </SIProvider>
+          </IngredientProvider>
+        </MediaProvider>
+      </RecipeProvider>
+    </UserProvider>
   );
 };
 
