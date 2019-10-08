@@ -12,7 +12,7 @@ const FormNumberInput = (props) => {
     const minValue = props.minValue ? props.minValue : 0;
     const maxValue = props.maxValue ? props.minValue : 100;
     const parsedInt = parseInt(value);
-    const intToString = parsedInt.toString();
+    // Remove callback()'s or add a predicate if using somewhere else but BMRCalculator
     if (!add) {
       if (parseInt(value) - 1 < minValue) {
         console.log('Minimum value reached: ', value);

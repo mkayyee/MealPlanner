@@ -36,6 +36,11 @@ const fetchPostUrl = async (url, data) => {
   return json;
 };
 
+const getMealPlannerTagFiles = async () => {
+  const result = await fetchGetUrl(apiUrl + 'tags/' +'MealPlanner' );
+  return result;
+};
+
 const mediaAPI = () => {
   const signInAsync = async (inputs, props) => {
     const data = {
@@ -109,7 +114,7 @@ const mediaAPI = () => {
   };
 
   const getAvatar = (id) => {
-    const [avatar, setAvatar] = useState('http://placekitten.com/100/100');
+    const [avatar, setAvatar] = useState('https://static.ex-in.online/users/2/20082/10506738_10150004552801856_220367501106153455_o_5c358dad.jpg');
     //console.log('avatar', apiUrl + 'tags/avatar_' + user.user_id);
     useEffect(() => {
       fetchGetUrl(apiUrl + 'tags/avatar_' + id).then((json) => {
@@ -122,20 +127,48 @@ const mediaAPI = () => {
     return avatar;
   };
 
-  const getUserInfo = (userId) => {
-    const [userInfo, setUserInfo] = useState({});
-    useEffect(() => {
-      fetchGetUrl(apiUrl + 'users/' + userId)
-        .then((json) => {
-          setUserInfo(json);
-        })
-        .catch((error) => {
-          console.log(console.error);
-        });
-    }, []);
-    return userInfo;
+  const deleteMedia = async (file, setMyMedia, setMedia) => {
+    return fetchDeleteUrl('media/' + file.file_id).then((json) => {
+      console.log('delete', json);
+      setMedia([]);
+      setMyMedia([]);
+      reloadAllMedia(setMedia, setMyMedia);
+    });
   };
 
+
+  const getAllMyRecipes = (id) => {
+    const {myMedia, setMyMedia} = useContext(MediaContext);
+    const [loading, setLoading] = useState(true);
+    const array = [];
+    const userTaggedFiles = [];
+
+    useEffect(() => {
+
+      fetchGetUrl(apiUrl + 'tags/' + 'MealPlanner').then((json) => {
+
+        console.log("arrrrray",json.length);
+        console.log("iiiiddd", id);
+
+        for (let i=0; i < json.length; i++){
+
+          if (json[i].user_id == id) {
+
+          userTaggedFiles.push(json[i]);
+
+          }
+        }
+        setMyMedia(userTaggedFiles);
+        setLoading(false);
+      });
+    }, []);
+    return [myMedia, loading];
+  };
+
+  const getUserInfo = async (id) => {
+    const userInfo= await  fetchGetUrl(apiUrl + 'users/' + id);
+    return userInfo;
+  };
   const userToContext = async () => {
     // Call this when app starts (= Home.js)
     const { user, setUser } = useContext(MediaContext);
@@ -263,7 +296,9 @@ const mediaAPI = () => {
     reloadRecipes,
     getUserInfo,
     addIdealIntakes,
-    getIdealIntakes
+    getIdealIntakes,
+    deleteMedia,
+    getAllMyRecipes,
   };
 };
 

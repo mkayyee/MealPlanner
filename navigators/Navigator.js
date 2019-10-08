@@ -64,6 +64,9 @@ const StackNavigator = createStackNavigator({
   BMRCalculator: {
     screen: BMRCalculator,
   },
+  Profile: {
+    screen: Profile
+  },
 });
 
 const Navigator = createSwitchNavigator(

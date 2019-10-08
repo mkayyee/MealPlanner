@@ -1,10 +1,11 @@
-import React, {useState, useContext} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {View, TextInput} from 'react-native';
 import PropTypes from 'prop-types';
 import mediaAPI from '../hooks/ApiHooks';
 import useRecipeSearch from '../hooks/RecipeSearchHook';
 import {List} from 'native-base';
 import AddIngredient from '../components/AddIngredients';
+import {SelectedIngredients} from '../context/SelectedIngredients';
 
 // The screen for searching ingredients and adding them into a recipe
 
@@ -12,6 +13,7 @@ const Ingredients = (props) => {
   const {getAllIngredients} = mediaAPI();
   const [data] = getAllIngredients();
   const {input, handleSearchChange} = useRecipeSearch();
+  const [ingredients, setIngredients] = useContext(SelectedIngredients);
   const [names, setNames] = useState();
 
   const searchIngredient = (text) => {
@@ -25,6 +27,9 @@ const Ingredients = (props) => {
     });
     setNames(igrArray);
   };
+  useEffect(() => {	
+    console.log(ingredients);	
+  }, []);
 
   return (
     <View>

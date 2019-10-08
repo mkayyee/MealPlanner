@@ -1,5 +1,5 @@
 
-// Returns a function that updates a single field within a state
+// Returns a function that updates a single field within a state (Object)
 const stateChanger = () => {
     // Parameters: 
     //         [0]                      [1]             [2]                 [3]
