@@ -16,7 +16,7 @@ const HomeDropdown = (props) => {
       <Picker
         style={{ width: 30 }}
         onValueChange={(itemValue, index) => {
-          props.navigation.navigate(router(index), {userID: props.userID, ideals: props.ideals});
+          props.navigation.navigate(router(index), {userID: props.userID, ideals: props.ideals, setIdeals: props.setIdeals});
         }}
       >
         <Picker.Item label='MyPlan' value='My Plan' />
