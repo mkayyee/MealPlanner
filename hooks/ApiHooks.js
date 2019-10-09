@@ -1,8 +1,8 @@
 import { useState, useContext, useEffect } from 'react';
 import { AsyncStorage } from 'react-native';
 import { IngredientContext } from '../context/IngredientContext';
-import { MediaContext } from '../context/MediaContext';
 import { RecipeContext } from '../context/RecipeContext';
+import {UserContext} from '../context/UserContext';
 
 const apiUrl = 'http://media.mw.metropolia.fi/wbma/';
 const foodUrl = 'http://185.87.111.206/foodapi/';
@@ -38,10 +38,20 @@ const fetchPostUrl = async (url, data, method = null) => {
   return json;
 };
 
-const getMealPlannerTagFiles = async () => {
-  const result = await fetchGetUrl(apiUrl + 'tags/' + 'MealPlanner');
-  return result;
+const fetchDeleteUrl = async (url, token = '') => {
+  const userToken = await AsyncStorage.getItem('userToken');
+  console.log('fetchDeleteUrl', url, userToken);
+  const response = await fetch(apiUrl + url, {
+    method: 'DELETE',
+    headers: {
+      'x-access-token': userToken,
+    },
+  });
+  const json = await response.json();
+  console.log('fetchDeleteUrl json', json);
+  return json;
 };
+
 
 const mediaAPI = () => {
   const signInAsync = async (inputs, props) => {
@@ -131,33 +141,66 @@ const mediaAPI = () => {
     return avatar;
   };
 
-  const deleteMedia = async (file, setMyMedia, setMedia) => {
+  const reloadAllMyRecipes = (setMyRecipes, id) => {
+
+    const userTaggedFiles = [];
+
+    console.log("iddddd", id);
+
+      fetchGetUrl(apiUrl + 'tags/' + 'MealPlanner').then((json) => {
+        
+          for (let i=0; i < json.length; i++){
+          if (json[i].user_id == id) {
+            console.log ("jsssssosoosos", json[i].user_id);
+          userTaggedFiles.push(json[i]);
+          }
+        }
+        console.log("tagged", userTaggedFiles);
+        setMyRecipes(userTaggedFiles);
+      });
+   
+        
+  };
+  const reloadAllRecipes = (setRecipes) => {
+    
+    fetchGetUrl(apiUrl + 'tags/' + 'MealPlanner').then((json) => {
+    setRecipes(json);
+
+    });
+       
+  };
+
+  const deleteMedia = async (file, setMyRecipes, setRecipes) => {
+
     return fetchDeleteUrl('media/' + file.file_id).then((json) => {
-      console.log('delete', json);
-      setMedia([]);
-      setMyMedia([]);
-      reloadAllMedia(setMedia, setMyMedia);
+      
+      setRecipes([]);
+      setMyRecipes([]);
+      reloadAllRecipes(setRecipes);
+      reloadAllMyRecipes(setMyRecipes, file.user_id);
     });
   };
 
   const getAllMyRecipes = (id) => {
-    const { myMedia, setMyMedia } = useContext(MediaContext);
+    const {myRecipes, setMyRecipes} = useContext(RecipeContext);
     const [loading, setLoading] = useState(true);
     const userTaggedFiles = [];
 
     useEffect(() => {
       fetchGetUrl(apiUrl + 'tags/' + 'MealPlanner').then((json) => {
-        for (let i = 0; i < json.length; i++) {
+          for (let i=0; i < json.length; i++){
           if (json[i].user_id == id) {
-            userTaggedFiles.push(json[i]);
+          userTaggedFiles.push(json[i]);
           }
         }
-        setMyMedia(userTaggedFiles);
+        setMyRecipes(userTaggedFiles);
         setLoading(false);
       });
     }, []);
-    return [myMedia, loading];
+    return [myRecipes, loading];
   };
+
+
 
   const getUserInfo = async (id) => {
     const userInfo = await fetchGetUrl(apiUrl + 'users/' + id);
@@ -166,7 +209,7 @@ const mediaAPI = () => {
 
   const userToContext = async () => {
     // Call this when app starts (= Home.js)
-    const { user, setUser } = useContext(MediaContext);
+    const [user, setUser ]= useContext(UserContext);
     const getFromStorage = async () => {
       const storageUser = JSON.parse(await AsyncStorage.getItem('user'));
       console.log('storage', storageUser);
@@ -221,9 +264,9 @@ const mediaAPI = () => {
     const json = await response.json();
     console.log(json);
   };
-
+ 
   const getRecipes = () => {
-    const [recipes, setRecipes] = useContext(RecipeContext);
+    const {recipes, setRecipes} = useContext(RecipeContext);
     const [loading, setLoading] = useState(true);
     // Fetch all media files with MealPlanner tag
     useEffect(() => {
@@ -235,16 +278,7 @@ const mediaAPI = () => {
     return [recipes, loading];
   };
 
-  const reloadRecipes = (setMedia, setMyMedia) => {
-    fetchGetUrl(apiUrl + 'tags/' + 'MealPlanner').then((json) => {
-      setMedia(json);
-    });
-    /*
-    fetchGetUrl(apiUrl +'media/user').then((json) => {
-      setMyMedia(json);
-    });
-    */
-  };
+  
   //  Example: const intakeObject = {id: {whatever.user_id}, data: {calories: 12345g, protein: 50g, carbs: 100g}};
   //  addIdealIntakes(intakeObject);
   const addIdealIntakes = (dataObject) => {
@@ -306,9 +340,10 @@ const mediaAPI = () => {
     userToContext,
     getAvatar,
     uploadRecipe,
-    getRecipes,
     getThumbnail,
-    reloadRecipes,
+    getRecipes,
+    reloadAllRecipes,
+    reloadAllMyRecipes,
     getUserInfo,
     addIdealIntakes,
     getIdealIntakes,

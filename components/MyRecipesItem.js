@@ -11,10 +11,12 @@ import {
   Text,
 } from 'native-base';
 import mediaAPI from '../hooks/ApiHooks';
-import {MediaContext} from '../context/MediaContext';
+import {RecipeContext} from '../context/RecipeContext';
 
 const MyRecipesListItem = (props) => {
-  const {setMedia, setMyMedia} = useContext(MediaContext);
+
+  const {setRecipes, setMyRecipes} = useContext(RecipeContext);
+  
   const {navigation, singleRecipe} = props;
   const {getThumbnail, deleteMedia} = mediaAPI();
   const tn = getThumbnail(singleRecipe.file_id);
@@ -45,7 +47,7 @@ const MyRecipesListItem = (props) => {
           onPress={
             () => {
               console.log('press');
-              deleteMedia(singleRecipe, setMyMedia, setMedia);
+              deleteMedia(singleRecipe, setMyRecipes, setRecipes);
             }
           }
         >
