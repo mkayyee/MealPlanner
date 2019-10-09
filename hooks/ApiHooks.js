@@ -7,10 +7,12 @@ import { RecipeContext } from '../context/RecipeContext';
 const apiUrl = 'http://media.mw.metropolia.fi/wbma/';
 const foodUrl = 'http://185.87.111.206/foodapi/';
 
-const fetchGetUrl = async (url) => {
+const fetchGetUrl = async (url, method = null) => {
+  let m = method ? method : 'GET';
   const userToken = await AsyncStorage.getItem('userToken');
   const response = await fetch(url, {
     headers: {
+      method: m,
       'x-access-token': userToken
     }
   });
@@ -19,11 +21,11 @@ const fetchGetUrl = async (url) => {
   return json;
 };
 
-const fetchPostUrl = async (url, data) => {
+const fetchPostUrl = async (url, data, method = null) => {
   console.log(JSON.stringify(data));
   console.log('fetchPostUrl data', data);
   const response = await fetch(url, {
-    method: 'POST',
+    method: method ? method : 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
@@ -37,7 +39,7 @@ const fetchPostUrl = async (url, data) => {
 };
 
 const getMealPlannerTagFiles = async () => {
-  const result = await fetchGetUrl(apiUrl + 'tags/' +'MealPlanner' );
+  const result = await fetchGetUrl(apiUrl + 'tags/' + 'MealPlanner');
   return result;
 };
 
@@ -114,7 +116,9 @@ const mediaAPI = () => {
   };
 
   const getAvatar = (id) => {
-    const [avatar, setAvatar] = useState('https://static.ex-in.online/users/2/20082/10506738_10150004552801856_220367501106153455_o_5c358dad.jpg');
+    const [avatar, setAvatar] = useState(
+      'https://static.ex-in.online/users/2/20082/10506738_10150004552801856_220367501106153455_o_5c358dad.jpg'
+    );
     //console.log('avatar', apiUrl + 'tags/avatar_' + user.user_id);
     useEffect(() => {
       fetchGetUrl(apiUrl + 'tags/avatar_' + id).then((json) => {
@@ -136,22 +140,16 @@ const mediaAPI = () => {
     });
   };
 
-
   const getAllMyRecipes = (id) => {
-    const {myMedia, setMyMedia} = useContext(MediaContext);
+    const { myMedia, setMyMedia } = useContext(MediaContext);
     const [loading, setLoading] = useState(true);
     const userTaggedFiles = [];
 
     useEffect(() => {
-
       fetchGetUrl(apiUrl + 'tags/' + 'MealPlanner').then((json) => {
-
-          for (let i=0; i < json.length; i++){
-
+        for (let i = 0; i < json.length; i++) {
           if (json[i].user_id == id) {
-
-          userTaggedFiles.push(json[i]);
-
+            userTaggedFiles.push(json[i]);
           }
         }
         setMyMedia(userTaggedFiles);
@@ -162,11 +160,9 @@ const mediaAPI = () => {
   };
 
   const getUserInfo = async (id) => {
-    const userInfo= await  fetchGetUrl(apiUrl + 'users/' + id);
+    const userInfo = await fetchGetUrl(apiUrl + 'users/' + id);
     return userInfo;
   };
-
-
 
   const userToContext = async () => {
     // Call this when app starts (= Home.js)
@@ -258,7 +254,27 @@ const mediaAPI = () => {
       });
     } else {
       console.log(
-        'The parameter for this function should be in the form of: {id: 234234523, data: {calories: 12345623, protein: 234, ... etc}}\nYour input:\n', dataObject      );
+        'The parameter for this function should be in the form of: {id: 234234523, data: {calories: 12345623, protein: 234, ... etc}}\nYour input:\n',
+        dataObject
+      );
+    }
+  };
+  const deleteIdealIntakes = (id) => {
+    console.log(foodUrl + 'deleteideal/' + id);
+    fetchGetUrl(foodUrl + 'deleteideal/' + id).then((json) => {
+      return json;
+    });
+  };
+  const modifyIdealIntakes = (dataObject) => {
+    if (dataObject.id && dataObject.data) {
+      fetchPostUrl(foodUrl + 'modifyideal', dataObject, 'PUT').then((json) => {
+        return json;
+      });
+    } else {
+      console.log(
+        'The parameter for this function should be in the form of: {id: 234234523, data: {calories: 12345623, protein: 234, ... etc}}\nYour input:\n',
+        dataObject
+      );
     }
   };
   // Example: getIdealIntakes(2440);   ---> returns an object containing user's
@@ -268,13 +284,13 @@ const mediaAPI = () => {
       .then((json) => {
         if (json != undefined && json[0] != undefined) {
           if (JSON.parse(json[0].data)) {
-            setIdeals(JSON.parse(json[0].data))
-            return (JSON.parse(json[0].data));
+            setIdeals(JSON.parse(json[0].data));
+            return JSON.parse(json[0].data);
           } else {
             return null;
           }
         } else {
-          return (null);
+          return null;
         }
       })
       .catch((error) => {
@@ -298,6 +314,8 @@ const mediaAPI = () => {
     getIdealIntakes,
     deleteMedia,
     getAllMyRecipes,
+    deleteIdealIntakes,
+    modifyIdealIntakes
   };
 };
 

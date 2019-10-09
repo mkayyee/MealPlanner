@@ -8,18 +8,17 @@ import {
   Image,
   TextInput,
   ScrollView,
-  Button,
   TouchableOpacity
 } from 'react-native';
 import PropTypes from 'prop-types';
 import IngredientItem from '../components/IngredientItem';
-import { Text, List, Card } from 'native-base';
+import { Text, List, Card, Button } from 'native-base';
 import { SelectedIngredients } from '../context/SelectedIngredients';
 import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import useRecipeForm from '../hooks/RecipeCreateHook';
-import { FontAwesome as Icon } from '@expo/vector-icons';
+import { FontAwesome as Icon, AntDesign as ExclamationCircle } from '@expo/vector-icons';
 
 const CreateRecipe = (props) => {
   const [displayErrors, setDisplayErrors] = useState(false);
@@ -89,13 +88,13 @@ const CreateRecipe = (props) => {
   return (
     <ScrollView style={styles.container}>
       <View style={{ marginTop: 10 }}>
-        <Button block onPress={() => resetAll()} title='Reset'></Button>
+        <Button width={'50%'} style={styles.goodButton} rounded onPress={() => resetAll()}><Text>Reset</Text></Button>
         <Button
-          block
+          rounded
+          width={'50%'}
+          style={styles.goodButton}
           onPress={pickImage}
-          color='green'
-          title='Select Image'
-        ></Button>
+        ><Text>Select Image</Text></Button>
         {file && (
           <View style={{ position: 'relative' }}>
             <Image
@@ -138,11 +137,10 @@ const CreateRecipe = (props) => {
           onPress={() => {
             navigation.navigate('Ingredients');
           }}
-          margin={20}
-          elevation={10}
-          color={'green'}
-          title={'New Ingredient'}
-        ></Button>
+          rounded
+          width={'50%'}
+          style={styles.goodButton}
+        ><Text>New Ingredient</Text></Button>
         <ScrollView maxHeight={'50%'} nestedScrollEnabled={true}>
           <List
             dataArray={ingredients}
@@ -198,7 +196,7 @@ const CreateRecipe = (props) => {
               setDisplayErrors(!displayErrors);
             }}
           >
-            <Icon name='exclamation-triangle' color='red' size={25}></Icon>
+            <ExclamationCircle color='#11BAA1' name='exclamationcircleo' size={25}></ExclamationCircle>
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
@@ -207,7 +205,7 @@ const CreateRecipe = (props) => {
               justifyContent: 'flex-end'
             }}
           >
-            <Icon name='check-circle' color='green' size={25}></Icon>
+            <Icon name='check-circle' color='#41B3A3' size={25}></Icon>
           </TouchableOpacity>
         )}
         <View>
@@ -237,9 +235,8 @@ const CreateRecipe = (props) => {
               handleRecipeUpload(file, ingredients, navigation, resetAll);
             }}
             disabled={validateAll() ? false : true}
-            color={validateAll() ? 'green' : 'grey'}
-            title='Create Recipe'
-          ></Button>
+            style={{justifyContent: 'center', margin: 20, backgroundColor: validateAll() ? '#41B3A3' : 'grey'}}
+          ><Text>Create Recipe</Text></Button>
         </View>
       </View>
     </ScrollView>
@@ -257,12 +254,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#e050ef'
   },
   text: {
-    fontSize: 25
+    margin: 5,
+    marginLeft: 50,
+    marginRight: 50,
+    fontSize: 25,
+    alignSelf: 'center',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: '#41B3A3'
   },
   errorText: {
-    color: 'red',
+    color: '#11BAA1',
     fontSize: 15
-  }
+  },
+  goodButton: {
+    margin: 5, 
+    backgroundColor: '#11B3A3',
+    justifyContent: 'center',
+  },
 });
 
 CreateRecipe.propTypes = {
