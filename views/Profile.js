@@ -5,7 +5,7 @@ import { List as BaseList, Container, Title, Header, Content, Card, CardItem, Th
 import DatePicker from 'react-native-datepicker';
 import { Icon } from 'react-native-elements'
 
-import {MediaContext} from '../context/MediaContext';
+import {UserContext} from '../context/UserContext';
 import mediaAPI from '../hooks/ApiHooks';
 import Meallist from '../components/MealList';
   
@@ -23,16 +23,15 @@ import Meallist from '../components/MealList';
 const Profile = (props) => {
 
   const mealsArray = [
+
     {title:"BREAKFAST", content: ArrayB, calories: breakfastCalories},
     {title:"LUNCH", content: ArrayL, calories: lunchCalories},
     {title:"DINNER", content: ArrayD, calories: dinnerCalories}, 
-    {title:"EXTRA", content: ArrayE, calories: extraCalories}]
+    {title:"EXTRA", content: ArrayE, calories: extraCalories}
+  ]
     
-
-
-
   const {navigation} = props;
-  const {user} = useContext(MediaContext);
+  const [user] = useContext(UserContext);
 
   [mealAdd,setMealAdd] = useState(false);
   
