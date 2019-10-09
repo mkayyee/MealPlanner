@@ -14,10 +14,13 @@ import Meallist from '../components/MealList';
   const ArrayD={objects:[], date:""};
   const ArrayE={objects:[], date:""};
 
-  const breakfastCalories = 0;
-  const lunchCalories = 0;
-  const dinnerCalories = 0;
-  const extraCalories = 0;
+  let breakfastCalories = 0;
+  let lunchCalories = 0;
+  let dinnerCalories = 0;
+  let extraCalories = 0;
+
+
+const Profile = (props) => {
 
   const mealsArray = [
     {title:"BREAKFAST", content: ArrayB, calories: breakfastCalories},
@@ -26,7 +29,7 @@ import Meallist from '../components/MealList';
     {title:"EXTRA", content: ArrayE, calories: extraCalories}]
     
 
-const Profile = (props) => {
+
 
   const {navigation} = props;
   const {user} = useContext(MediaContext);
@@ -59,7 +62,6 @@ const Profile = (props) => {
       ArrayB.objects.push(file1);
       ArrayB.date = date;
       breakfastCalories += recipeInfo.totalNutrients.calories;
-      console.log("CAAAAALLLLOOORIEEES", breakfastCalories);
       console.log("arrayB", ArrayB);
 
   
@@ -68,16 +70,22 @@ const Profile = (props) => {
       if (item==="LUNCH") {
       ArrayL.objects.push(file1);
       ArrayL.date = date;
+      lunchCalories += recipeInfo.totalNutrients.calories;
+
       }
       
       if (item==="DINNER") {
       ArrayD.objects.push(file1);
       ArrayD.date = date;
+      dinnerCalories += recipeInfo.totalNutrients.calories;
+
      }
       
       if (item==="EXTRA") {
       ArrayE.objects.push(file1);
       ArrayE.date = date;
+      extraCalories += recipeInfo.totalNutrients.calories;
+
       }
 
       setMealAdd(true);
@@ -92,7 +100,7 @@ const Profile = (props) => {
           {text: 'Ok', onPress: () => console.log('OK Pressed')},
         ],
         { cancelable: true }
-        //clicking out side of alert will not cancel
+        
       );}
     } 
 
@@ -163,6 +171,15 @@ const Profile = (props) => {
                 </Right>           
             </CardItem>
         </Card>
+        <Card>
+          <CardItem>
+            <Body>
+              <Body>
+        <Text>CONSUMED CALORIES: {breakfastCalories+lunchCalories+dinnerCalories+extraCalories}</Text>
+        </Body>
+        </Body>
+        </CardItem>
+        </Card>
          <BaseList 
          dataArray={mealsArray}
          renderRow={
@@ -172,8 +189,8 @@ const Profile = (props) => {
           <CardItem>
           <Left>
           <Body>
-          <Text>{item.title}</Text>
-          <Text> {}</Text>
+          <Text style={{}}>{item.title}</Text>
+          <Text note> {item.calories} Cal</Text>
           </Body>
           <Button transparent style ={{paddingLeft:30}}  
           onPress={() => { addToMealPlan (mealAdd,item.title); }}><Icon name= "add"></Icon></Button>
@@ -187,7 +204,7 @@ const Profile = (props) => {
         }
         keyExtractor={(item, index) => index.toString()}
          />
-
+         
         <Card>
           <CardItem>
         <Button rounded info onPress={signOutAsync} style={{marginRight:50,marginLeft:50,marginBottom:10,justifyContent:"center"}}><Text>Logout!</Text></Button>

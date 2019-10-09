@@ -140,17 +140,13 @@ const mediaAPI = () => {
   const getAllMyRecipes = (id) => {
     const {myMedia, setMyMedia} = useContext(MediaContext);
     const [loading, setLoading] = useState(true);
-    const array = [];
     const userTaggedFiles = [];
 
     useEffect(() => {
 
       fetchGetUrl(apiUrl + 'tags/' + 'MealPlanner').then((json) => {
 
-        console.log("arrrrray",json.length);
-        console.log("iiiiddd", id);
-
-        for (let i=0; i < json.length; i++){
+          for (let i=0; i < json.length; i++){
 
           if (json[i].user_id == id) {
 
@@ -169,6 +165,9 @@ const mediaAPI = () => {
     const userInfo= await  fetchGetUrl(apiUrl + 'users/' + id);
     return userInfo;
   };
+
+
+
   const userToContext = async () => {
     // Call this when app starts (= Home.js)
     const { user, setUser } = useContext(MediaContext);

@@ -9,13 +9,20 @@ import { UserContext } from '../context/UserContext';
 import mediaAPI from '../hooks/ApiHooks';
 
 const Home = (props) => {
+
   const [user, setUser] = useContext(UserContext);
   const { navigation } = props;
-  const { getIdealIntakes } = mediaAPI();
+  const { getIdealIntakes, userToContext } = mediaAPI();
   const [ideals, setIdeals] = useState(null);
+
+  userToContext().then((user) => {
+    console.log('usercontext', user);
+  });
+ 
 
   // Retreives user data from the AsyncStorage and make's
   // A call, with the user id to the API to get info about user's ideal nutrient take
+
   const getUserData = async () => {
     const data = await AsyncStorage.getItem('user');
     if (user == null) {
@@ -38,6 +45,7 @@ const Home = (props) => {
       console.log(user);
     }
     getUserData();
+    console.log("uuuuserr", user);
   });
 
   return (
