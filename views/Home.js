@@ -9,8 +9,12 @@ import { UserContext } from '../context/UserContext';
 import mediaAPI from '../hooks/ApiHooks';
 
 const Home = (props) => {
+<<<<<<< HEAD
 
   const [user, setUser] = useContext(UserContext);
+=======
+   const [user, setUser] = useContext(UserContext);
+>>>>>>> 7ea5be5df7cc124c495604fb0c8abd64a2057378
   const { navigation } = props;
   const { getIdealIntakes, userToContext } = mediaAPI();
   const [ideals, setIdeals] = useState(null);
@@ -18,7 +22,10 @@ const Home = (props) => {
   userToContext().then((user) => {
     console.log('usercontext', user);
   });
+<<<<<<< HEAD
  
+=======
+>>>>>>> 7ea5be5df7cc124c495604fb0c8abd64a2057378
 
   // Retreives user data from the AsyncStorage and make's
   // A call, with the user id to the API to get info about user's ideal nutrient take
