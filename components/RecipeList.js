@@ -5,10 +5,13 @@ import RecipeItem from './RecipeItem';
 import mediaAPI from '../hooks/ApiHooks';
 
 const RecipeList = (props) => {
+ 
   const {navigation} = props;
   const {getRecipes} = mediaAPI();
   const [recipes, loading] = getRecipes();
+ 
   return (
+
     <BaseList style={{marginLeft:0, marginRight:0}}
       dataArray={recipes}
       renderRow={(item) =>

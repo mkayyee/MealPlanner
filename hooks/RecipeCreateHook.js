@@ -3,6 +3,8 @@ import validate from 'validate.js';
 import validation from '../validators/Validation';
 import mediaAPI from './ApiHooks';
 import { RecipeContext } from '../context/RecipeContext';
+import {UserContext} from '../context/UserContext';
+
 
 const initialErrors = {
   recipeNameError: 'The recipe must have a name (max 35 characters)',
@@ -11,10 +13,12 @@ const initialErrors = {
 const initialInputs = { recipeName: '', instructions: '' };
 
 const useRecipeForm = () => {
-  const { uploadRecipe, reloadRecipes } = mediaAPI();
-  const [recipes, setRecipes] = useContext(RecipeContext);
+  const { uploadRecipe, reloadAllRecipes, reloadAllMyRecipes } = mediaAPI();
+  const {recipes, setRecipes} = useContext(RecipeContext);
+  const {myRecipes, setMyRecipes} = useContext(RecipeContext);
   const [inputs, setInputs] = useState(initialInputs);
   const [errors, setErrors] = useState(initialErrors);
+  const [user] = useContext(UserContext);
 
   const handleRecipeNameChange = (text) => {
     const recipeNameError = validator('recipe', text);
@@ -98,10 +102,15 @@ const useRecipeForm = () => {
     uploadRecipe(fd)
       .then((response) => {
         console.log('response from Recipe Creation: \n', response);
+        setMyRecipes([]);
         setRecipes([]);
         setTimeout(() => {
           resetAll();
-          reloadRecipes(setRecipes);
+
+          reloadAllRecipes(setRecipes);
+          reloadAllMyRecipes(setMyRecipes, user.user_id);
+          console.log("fileuuuuuuseriiidd", user.user_id);
+
           navigation.navigate('Home');
         }, 2000);
       })
