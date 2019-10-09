@@ -45,7 +45,8 @@ const RecipeItem = (props) => {
   return (
     <BaseListItem
       onPress={() => {
-        navigation.push('Single');
+        console.log('Navigate to single here with:\n', recipeInfo);
+        navigation.push('Single', { file: singleRecipe });
       }}
     >
       <Content>
@@ -64,50 +65,50 @@ const RecipeItem = (props) => {
                   style={{ height: 340, width: 340, marginRight: 5 }}
                 />
                 <View
-                style={{
-                  position: 'absolute',
-                  top: 15,
-                  left: 5,
-                  right: 0,
-                  bottom: 0
-                }}>
-                <TouchableOpacity
-                  style={{width: '40%', height: '20%'}}
-                  onPress={() => {
-                    console.log('User pressed');
+                  style={{
+                    position: 'absolute',
+                    top: 15,
+                    left: 5,
+                    right: 0,
+                    bottom: 0
                   }}
-                  
                 >
-                  <Thumbnail
-                    source={{ uri: getAvatar(singleRecipe.user_id) }}
-                    style={{
-                      borderRadius: 20,
-                      width: 40,
-                      height: 40,
-                      position: 'relative',
-                      right: 0,
-                      bottom: 0
+                  <TouchableOpacity
+                    style={{ width: '40%', height: '20%' }}
+                    onPress={() => {
+                      console.log('User pressed');
                     }}
-                  />
-                  {
-                    <Text
+                  >
+                    <Thumbnail
+                      source={{ uri: getAvatar(singleRecipe.user_id) }}
                       style={{
-                        fontWeight: 'bold',
-                        color: 'white',
+                        borderRadius: 20,
+                        width: 40,
+                        height: 40,
                         position: 'relative',
-                        top: -30,
-                        left: 50,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        textShadowRadius: 10,
-                        textShadowOffset: { width: -1.5, height: 1.5 },
-                        textShadowColor: 'black'
+                        right: 0,
+                        bottom: 0
                       }}
-                    >
-                      by {userInfo.username}
-                    </Text>
-                  }
-                </TouchableOpacity>
+                    />
+                    {
+                      <Text
+                        style={{
+                          fontWeight: 'bold',
+                          color: 'white',
+                          position: 'relative',
+                          top: -30,
+                          left: 50,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          textShadowRadius: 10,
+                          textShadowOffset: { width: -1.5, height: 1.5 },
+                          textShadowColor: 'black'
+                        }}
+                      >
+                        by {userInfo.username}
+                      </Text>
+                    }
+                  </TouchableOpacity>
                 </View>
                 <Text
                   style={{
