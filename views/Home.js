@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View, AsyncStorage, Image, TextInput } from 'react-native';
-import { Container, Header, Icon, Left, Right, Text } from 'native-base';
+import { StyleSheet, View, AsyncStorage, StatusBar, TextInput, Image } from 'react-native';
+import { Container, Header, Icon, Left, Right } from 'native-base';
 import PropTypes from 'prop-types';
 import RecipeList from '../components/RecipeList';
 import HomeDropdown from '../components/HomeDropdown';
@@ -48,14 +48,17 @@ const Home = (props) => {
 
   return (
     <Container>
-      <Header style={{ backgroundColor: 'white' }}>
-        <Left></Left>
+      <StatusBar backgroundColor='#1f425f'></StatusBar>
+      <Header style={{backgroundColor: 'white'}}>
+      <Image source={require("../pictures/logo.jpg")} style={{height: 30, width: 30, marginTop:10, marginRight: 10, marginLeft: 10}} />
         <View
           style={{
             flexDirection: 'row',
             borderColor: 'lightgrey',
+            backgroundColor: 'white',
             borderWidth: 1,
-            width: 300,
+            width: 250,
+            marginLeft: 20,
             height: 30,
             borderRadius: 10,
             marginTop: 10

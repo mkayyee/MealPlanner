@@ -1,12 +1,27 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, StyleSheet, ImageBackground } from 'react-native';
-import { Text, Button, Card, Content } from 'native-base';
+import {
+  View,
+  StyleSheet,
+  ImageBackground,
+  Image,
+  TouchableOpacity
+} from 'react-native';
+import {
+  Text,
+  Button,
+  Header,
+  Title,
+  Left,
+  Body,
+  Right,
+  Icon
+} from 'native-base';
 import FormNumberImput from '../components/FormNumberInput';
 import SwitchSelector from 'react-native-switch-selector';
 import stateChanger from '../components/stateChanger';
 import mediaAPI from '../hooks/ApiHooks';
 import { UserContext } from '../context/UserContext';
-
+import HomeDropdown from '../components/HomeDropdown';
 
 const BMRCalculator = (props) => {
   const [user, setUser] = useContext(UserContext);
@@ -23,8 +38,10 @@ const BMRCalculator = (props) => {
     console.log('State changed or initiated. New state:\n', state);
   });
   const calculateBMR = (age, height, weight, gender, update = false) => {
-    const maleCalories = Math.round(((10*weight) + (6.25*height) + (5*age)) + 5);
-    const femaleCalories = Math.round(((9.247*weight) + (3.098*height) + (4.33*age)) -161);
+    const maleCalories = Math.round(10 * weight + 6.25 * height + 5 * age + 5);
+    const femaleCalories = Math.round(
+      9.247 * weight + 3.098 * height + 4.33 * age - 161
+    );
     let userID = user.user_id;
     const maleObject = {
       calories: maleCalories,
@@ -40,7 +57,6 @@ const BMRCalculator = (props) => {
       age: age,
       weight: weight,
       gender: gender
-      
     };
     if (gender === 'Male') {
       if (!update) {
@@ -50,7 +66,7 @@ const BMRCalculator = (props) => {
       }
     } else {
       if (!update) {
-        addIdealIntakes({id: userID, data: femaleObject});
+        addIdealIntakes({ id: userID, data: femaleObject });
       } else {
         modifyIdealIntakes({ id: userID, data: femaleObject });
       }
@@ -71,32 +87,50 @@ const BMRCalculator = (props) => {
     }, 2);
   };
   return (
-      <ImageBackground blurRadius={5} source = {require("../pictures/potentialappBG.jpeg")} style={{flex:1, 
-    width: '100%', 
-    height: '100%'}} > 
-      <View style={{marginLeft: 45, marginRight: 45}}>
-      <Text
-        style={{
-          fontSize: 35,
-          color: '#fd7e03',
-          alignSelf: 'center',
-          fontWeight: 'bold',
-          textAlign: 'center',
-        }}
-      >
-        Basal Metabolic Rate Calculator
-      </Text>
+    <ImageBackground
+      blurRadius={5}
+      source={require('../pictures/potentialappBG.jpeg')}
+      style={{ flex: 1, width: '100%', height: '100%' }}
+    >
+      <Header style={{ backgroundColor: 'white', width: '100%' }}>
+        <Left>
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.navigate('Home');
+            }}
+          >
+            <Icon name='arrow-back'></Icon>
+          </TouchableOpacity>
+        </Left>
+        <Image
+          source={require('../pictures/logo.jpg')}
+          style={{ height: 30, width: 30, marginTop: 10, marginRight: 20 }}
+        />
+        <Title style={{ marginTop: 10, color: 'black' }}>Meal Planner</Title>
+
+        <Right>
+          <HomeDropdown navigation={props.navigation}></HomeDropdown>
+        </Right>
+      </Header>
+      <View style={{ marginLeft: 45, marginRight: 45 }}>
+        <Text
+          style={{
+            fontSize: 30,
+            color: '#fd7e03',
+            alignSelf: 'center',
+            fontWeight: 'bold',
+            textAlign: 'center'
+          }}
+        >
+          Basal Metabolic Rate Calculator
+        </Text>
       </View>
       {user.ideals != null && user.ideals && !modify ? (
         <View>
           {user.ideals.height ? (
             <View>
-              <Text style={styles.text}>
-                Weight: {user.ideals.weight} kg
-              </Text>
-              <Text style={styles.text}>
-                Height: {user.ideals.height} cm
-              </Text>
+              <Text style={styles.text}>Weight: {user.ideals.weight} kg</Text>
+              <Text style={styles.text}>Height: {user.ideals.height} cm</Text>
               <Text style={styles.text}>Age: {user.ideals.age}</Text>
               <Text style={styles.text}>Gender: {user.ideals.gender}</Text>
               <Text style={styles.calorieIntake}>
@@ -171,15 +205,25 @@ const BMRCalculator = (props) => {
               changeState('gender', value, state, setState);
             }}
             buttonColor={'#fd7e03'}
-            style={{ marginTop: 10 }}
+            style={{ marginTop: 10, width: '75%', alignSelf: 'center' }}
             options={options}
+            height={30}
           ></SwitchSelector>
           <Button
+            disabled={
+              state.age > 0 && state.height > 0 && state.weight > 0
+                ? false
+                : true
+            }
             style={{
               alignSelf: 'center',
               marginTop: 10,
               width: '50%',
-              backgroundColor: '#385b71',
+              height: 35,
+              backgroundColor:
+                state.age > 0 && state.height > 0 && state.weight > 0
+                  ? '#385b71'
+                  : 'grey',
               justifyContent: 'center'
             }}
             onPress={() => {
@@ -199,14 +243,34 @@ const BMRCalculator = (props) => {
                 }, 1000);
               }
             }}
-            size={45}
+            size={35}
             rounded
           >
             <Text style={{ textAlign: 'center' }}>Calculate</Text>
           </Button>
+          <Button
+            style={{
+              alignSelf: 'center',
+              marginTop: 10,
+              width: '35%',
+              height: 30,
+              backgroundColor: '#385b71',
+              justifyContent: 'center'
+            }}
+            onPress={() => {
+              setModify(false);
+              setTimeout(() => {
+                props.navigation.navigate('BMRCalculator');
+              }, 100);
+            }}
+            size={30}
+            rounded
+          >
+            <Text style={{ textAlign: 'center' }}>Back</Text>
+          </Button>
         </View>
       )}
-      </ImageBackground>
+    </ImageBackground>
   );
 };
 const options = [
@@ -237,7 +301,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
     fontWeight: 'bold',
-    color: '#fd7e03',
+    color: '#fd7e03'
   },
   calorieIntake: {
     color: '#C7C7CD',
@@ -247,7 +311,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     alignSelf: 'center',
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   }
 });
 

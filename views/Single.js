@@ -4,9 +4,10 @@ import {
   View,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  StatusBar
 } from 'react-native';
-import {H2,  Container, Title, Header, Icon, Content, Card, CardItem, Thumbnail, Text, Button, Left, Body, Right} from 'native-base';
+import {Container, Title, Header, Icon, Card, CardItem, Text, Left, Body, Right} from 'native-base';
 import PropTypes from 'prop-types';
 import mediaAPI from '../hooks/ApiHooks';
 
@@ -43,10 +44,11 @@ const Single = props => {
 
   return (
     <Container>
+      <StatusBar backgroundColor='#1f425f'></StatusBar>
         <Header style={{backgroundColor:"white"}}>
         <Left>
-        <Button transparent 
-       onPress={() => {navigation.navigate("Home"); }}><Icon name= "arrow-back"></Icon></Button>
+        <TouchableOpacity
+       onPress={() => {navigation.navigate("Home"); }}><Icon name= "arrow-back"></Icon></TouchableOpacity>
        </Left>
           <Image source={require("../pictures/logo.jpg")} style={{height: 30, width: 30, marginTop:10}} />
           <Body>
@@ -64,45 +66,40 @@ const Single = props => {
                   }}
         style={{height: 340, width: '100%'}}
       />
+      <View style={{ position: 'absolute',
+          top: 220,
+          left: 20,
+          right: 0,
+          bottom: 0  }}>
       <Text
         style={{
           fontWeight: 'bold',
           fontSize:25,
           color: 'white',
-          position: 'absolute',
           textShadowRadius: 10,
           textShadowOffset: {width: -1.5, height: 1.5},
           textShadowColor: 'black',
-          top: 240,
-          left: 20,
-          right: 0,
-          bottom: 0  
+
         }}>
          {file.title}
       </Text>
-
-
       <Text
         style={{
           fontWeight: 'bold',
           color: 'white',
-          position: 'absolute',
           textShadowRadius: 10,
           textShadowOffset: {width: -1.5, height: 1.5},
           textShadowColor: 'black',
-          top: 300,
-          left: 20,
-          right: 0,
-          bottom: 0  
         }}>
         by {userInfo.username}
       </Text>
+      </View>
       <View>
         <Card>
           <CardItem>
             <Body>
               <Body>
-              <Text>INGREDIENTS</Text>
+              <Text style={{color: '#fd7e03'}}>INGREDIENTS</Text>
               </Body>
             </Body>
           </CardItem>
@@ -117,7 +114,7 @@ const Single = props => {
           <CardItem>
             <Body>
               <Body>
-              <Text>PREPARATION</Text>
+              <Text style={{color: '#fd7e03'}}>PREPARATION</Text>
               </Body>
             </Body>
           </CardItem>
@@ -131,7 +128,7 @@ const Single = props => {
           <CardItem>
             <Body>
               <Body>
-              <Text>NUTRITIONAL VALUES</Text>
+              <Text style={{color: '#fd7e03'}}>NUTRITIONAL VALUES</Text>
               </Body>
             </Body>
           </CardItem>

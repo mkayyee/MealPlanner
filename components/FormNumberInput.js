@@ -68,7 +68,7 @@ const FormNumberInput = (props) => {
               valueValidator(false);
             }}
           >
-            <Icon name={'circle-with-minus'} color={'red'} size={35}></Icon>
+            <Icon name={'circle-with-minus'} color={'#fd7e03'} size={35}></Icon>
           </TouchableOpacity>
           <Item rounded style={{ flex: 0.5, backgroundColor: 'white' }}>
             <Input

@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {StyleSheet, View,  AsyncStorage, Image, Alert} from 'react-native';
+import {StyleSheet, View,  AsyncStorage, Image, Alert, StatusBar} from 'react-native';
 import PropTypes from 'prop-types';
 import { List as BaseList, Container, Title, Header, Content, Card, CardItem, Thumbnail, Text, Button, Left, Body, Right } from 'native-base';
 import DatePicker from 'react-native-datepicker';
@@ -8,6 +8,7 @@ import { Icon } from 'react-native-elements';
 import {UserContext} from '../context/UserContext';
 import mediaAPI from '../hooks/ApiHooks';
 import Meallist from '../components/MealList';
+import HomeDropdown from '../components/HomeDropdown';
   
   const ArrayB={objects:[], date:""};
   const ArrayL={objects:[], date:""};
@@ -104,18 +105,15 @@ const Profile = (props) => {
     } 
 
   return (
-    <Container>
-        <Header style={{backgroundColor:"white"}}>
-          <Left> 
-          </Left>
-          <Image source={require("../pictures/logo.jpg")} style={{height: 30, width: 30, marginTop:10}} />
-          <Body>
+    <Container style={{backgroundColor: '#1f313f'}}>
+      <StatusBar backgroundColor='#1f425f'></StatusBar>
+        <Header style={{ backgroundColor: 'white'}}>
+      <Image source={require("../pictures/logo.jpg")} style={{height: 30, width: 30, marginTop:10, marginRight: 10, marginLeft: 10}} />
+          <Title style={{marginTop:10, marginLeft: 20, color:"black"}}>Meal Planner</Title>
           <Right>
-            <Title style={{marginTop:15, color:"black"}}>Meal Planner</Title>
-          </Right>         
-          </Body>
-          <Right />
-        </Header>
+          <HomeDropdown navigation={navigation}></HomeDropdown>
+        </Right>
+      </Header>
         <Content>
           <Card style={{flex: 0}}>
             <CardItem>

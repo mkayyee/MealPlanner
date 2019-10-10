@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
 import {
-  Text,
   View,
   Picker,
-  TouchableOpacity,
   AsyncStorage
 } from 'react-native';
 
@@ -13,13 +11,21 @@ const signOutAsync = async () => {
 
 const HomeDropdown = (props) => {
   const router = (index) => {
-    if (index == 1) {
-      return 'BMRCalculator';
-    } else if (index == 2) {
-      signOutAsync();
-      return ('Auth');
+    switch (index) {
+      case 1:
+        return 'BMRCalculator';
+      case 2:
+        return 'Home';
+      case 3:
+        return 'Profile';
+      case 4:
+        return 'MyRecipes';
+      case 5:
+        return 'CreateRecipe';
+      case 6:
+        signOutAsync();
+        return 'Auth';
     }
-    return ('Home');
   };
   useEffect(() => {
     console.log(props.ideals);
@@ -36,8 +42,12 @@ const HomeDropdown = (props) => {
           });
         }}
       >
-        <Picker.Item label='Home' value='Home' />
+        <Picker.Item label='Picker 1st item no work' value='Calculate BMR' />
         <Picker.Item label='Calculate BMR' value='Calculate BMR' />
+        <Picker.Item label='Home' value='Home' />
+        <Picker.Item label='My profile' value='Profile' />
+        <Picker.Item label='My recipes' value='MyRecipes' />
+        <Picker.Item label='Create a recipe' value='CreateRecipe' />
         <Picker.Item label='Logout' value='Auth' />
       </Picker>
     </View>

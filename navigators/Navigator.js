@@ -25,6 +25,11 @@ const TabNavigator = createBottomTabNavigator(
     Profile,
   },
   {
+    tabBarOptions: {
+      style: {
+        backgroundColor: '#1f313f'
+      }
+    },
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: () => {
         const { routeName } = navigation.state;
@@ -40,8 +45,8 @@ const TabNavigator = createBottomTabNavigator(
         }
 
         // You can return any component that you like here!
-        return <Icon name={iconName} size={25} />;
-      }
+        return <Icon name={iconName} color={'#fd7e03'} size={25} /> ;
+      },
     })
   }
 );
@@ -50,7 +55,7 @@ const StackNavigator = createStackNavigator({
   Home: {
     screen: TabNavigator,
     navigationOptions: {
-      header: null // this will hide the header
+      header: null, // this will hide the header
     }
   },
   Single: {
@@ -67,9 +72,15 @@ const StackNavigator = createStackNavigator({
   },
   BMRCalculator: {
     screen: BMRCalculator,
+    navigationOptions: {
+      header: null
+    }
   },
   Profile: {
-    screen: Profile
+    screen: Profile,
+    navigationOptions: {
+      header: null
+    }
   },
   Search: {
     screen: Search,

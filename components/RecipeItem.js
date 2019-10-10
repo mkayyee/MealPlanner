@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Image, TouchableOpacity, View } from 'react-native';
+import SCREEN_IMPORT from 'Dimensions';
+import { Image, TouchableOpacity, View, ImageBackground } from 'react-native';
 import {
   ListItem as BaseListItem,
   Button,
@@ -14,8 +15,8 @@ import {
   Content,
   Card,
   CardItem,
-  Icon
 } from 'native-base';
+import {MaterialIcons as Icon} from '@expo/vector-icons';
 import mediaAPI from '../hooks/ApiHooks';
 
 const apiUrl = 'http://media.mw.metropolia.fi/wbma/';
@@ -27,7 +28,10 @@ const RecipeItem = (props) => {
   const [userInfo, setUserInfo] = useState({});
   //const [avatar, setAvatar] = useState('http://placekitten.com/100/100');
 
+  let SCREEN_WIDTH = SCREEN_IMPORT.get('window').width;
+
   useEffect(() => {
+    SCREEN_WIDTH = SCREEN_IMPORT.get('window').width,
     getUserInfo(singleRecipe.user_id)
       .then((json) => {
         setUserInfo(json);
@@ -43,15 +47,16 @@ const RecipeItem = (props) => {
     // etc...
   });
   return (
+
     <BaseListItem
       onPress={() => {
         navigation.push('Single', { file: singleRecipe });
       }}
     >
       <Content>
-        <Card style={{ flex: 0 }}>
-          <CardItem>
-            <Body>
+        <Card >
+          <CardItem style={{paddingTop: 0, paddingBottom: 0,}}>
+            <Body >
               <Body>
                 <Image
                   square
@@ -61,13 +66,13 @@ const RecipeItem = (props) => {
                       'http://media.mw.metropolia.fi/wbma/uploads/' +
                       singleRecipe.filename
                   }}
-                  style={{ height: 340, width: 340, marginRight: 5 }}
+                  style={{ height: 340, width: SCREEN_WIDTH}}
                 />
                 <View
                   style={{
                     position: 'absolute',
                     top: 15,
-                    left: 5,
+                    left: 25,
                     right: 0,
                     bottom: 0
                   }}
@@ -111,7 +116,7 @@ const RecipeItem = (props) => {
                 </View>
                 <View style={{
                     top: 230,
-                    left: 20,
+                    left: 40,
                     right: 20,
                     bottom: 0,
                     position: 'absolute'
@@ -153,33 +158,32 @@ const RecipeItem = (props) => {
               navigation.push('Profile', { file: singleRecipe });
             }}
           >
-            <CardItem>
-              <Text style={{ fontSize: 20, paddingLeft: 40 }}>
+            <CardItem style={{width: SCREEN_WIDTH}}>
+              <Text style={{ fontSize: 15, paddingLeft: 40 }}>
                 Add to Meal Plan
               </Text>
               <Right>
-                <Button
-                  rounded
+                <TouchableOpacity
                   onPress={() => {
                     navigation.push('Profile', { file: singleRecipe });
                   }}
-                  primary
                   style={{
-                    width: 50,
-                    height: 45,
+                    width: 35,
+                    height: 25,
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginRight: 20
                   }}
                 >
-                  <Icon name='add'></Icon>
-                </Button>
+                  <Icon color={'#fd7e03'} size={35} name='add-circle'></Icon>
+                </TouchableOpacity>
               </Right>
             </CardItem>
           </TouchableOpacity>
         </Card>
       </Content>
     </BaseListItem>
+
   );
 };
 

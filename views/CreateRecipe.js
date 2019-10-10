@@ -9,7 +9,8 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
-  ImageBackground
+  ImageBackground,
+  StatusBar
 } from 'react-native';
 import PropTypes from 'prop-types';
 import IngredientItem from '../components/IngredientItem';
@@ -19,9 +20,7 @@ import {
   Card,
   Button,
   Header,
-  Left,
   Right,
-  Body,
   Title
 } from 'native-base';
 import { SelectedIngredients } from '../context/SelectedIngredients';
@@ -33,6 +32,7 @@ import {
   FontAwesome as Icon,
   AntDesign as ExclamationCircle
 } from '@expo/vector-icons';
+import HomeDropdown from '../components/HomeDropdown';
 
 const CreateRecipe = (props) => {
   const [displayErrors, setDisplayErrors] = useState(false);
@@ -101,23 +101,16 @@ const CreateRecipe = (props) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor='#1f425f'></StatusBar>
       <ImageBackground blurRadius={2} source = {require("../pictures/vegetables.jpeg")} style={{flex:1, 
     width: '100%', 
     height: '100%'}} > 
-      <Header style={{ backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', alignContent: 'center'}}>
-        <Left></Left>
-        <Image
-          source={require('../pictures/logo.jpg')}
-          style={{ height: 30, width: 30, marginTop: 10 }}
-        />
-        <Body>
+      <Header style={{ backgroundColor: 'white'}}>
+      <Image source={require("../pictures/logo.jpg")} style={{height: 30, width: 30, marginTop:10, marginRight: 10, marginLeft: 10}} />
+          <Title style={{marginTop:10, marginLeft: 20, color:"black"}}>Meal Planner</Title>
           <Right>
-            <Title style={{ marginTop: 15, color: 'black', textAlign: 'center'}}>
-              Meal Planner
-            </Title>
-          </Right>
-        </Body>
-        <Right />
+          <HomeDropdown navigation={navigation}></HomeDropdown>
+        </Right>
       </Header>
       <ScrollView>
         <View style={{ margin: 40, marginTop: 10, marginBottom: 0 }}>

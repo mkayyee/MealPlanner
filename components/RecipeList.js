@@ -12,7 +12,9 @@ const RecipeList = (props) => {
  
   return (
 
-    <BaseList style={{marginLeft:0, marginRight:0}}
+    <BaseList style={{marginLeft:0, marginRight:0, paddingLeft: 0, paddingRight: 0}}
+    style={{backgroundColor
+      : 'white'}}
       dataArray={recipes}
       renderRow={(item) =>
         <RecipeItem navigation={navigation} singleRecipe={item} />}

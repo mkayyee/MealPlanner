@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { StatusBar} from 'react-native';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -34,12 +34,14 @@ const App = () => {
 
   return (
     <UserProvider>
+      <StatusBar backgroundColor='#1f425f'></StatusBar>
       <RecipeProvider>
         
           <IngredientProvider>
             <SRProvider>
             <SIProvider>
-              <Navigator />
+              <Navigator>
+              </Navigator>
             </SIProvider>
             </SRProvider>
           </IngredientProvider>
