@@ -70,6 +70,7 @@ const Search = (props) => {
               // automatically displays all items (which start with '') if nothing is typed in
               input.letters.length == 0 ? searchRecipe('') : searchRecipe(input.letters);
             }}
+          
             onChangeText={(text) => {
               handleSearchChange(text);
               searchRecipe(text);
