@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native';
 import { Input, Item, Label, View } from 'native-base';
-import { AntDesign as Icon } from '@expo/vector-icons';
+import { Entypo as Icon } from '@expo/vector-icons';
 
 const FormNumberInput = (props) => {
   const [value, setValue] = useState(props.defaultValue);
@@ -68,7 +68,7 @@ const FormNumberInput = (props) => {
               valueValidator(false);
             }}
           >
-            <Icon name={'minuscircleo'} color={'red'} size={35}></Icon>
+            <Icon name={'circle-with-minus'} color={'red'} size={35}></Icon>
           </TouchableOpacity>
           <Item rounded style={{ flex: 0.5, backgroundColor: 'white' }}>
             <Input
@@ -91,7 +91,7 @@ const FormNumberInput = (props) => {
             }}
             style={{ alignSelf: 'center' }}
           >
-            <Icon name={'pluscircleo'} color={'green'} size={35}></Icon>
+            <Icon name={'circle-with-plus'} color={'green'} size={35}></Icon>
           </TouchableOpacity>
         </View>
       </View>

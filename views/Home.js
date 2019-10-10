@@ -78,14 +78,9 @@ const Home = (props) => {
           />
         </View>
         <Right>
-          <HomeDropdown ideals={ideals} navigation={navigation}></HomeDropdown>
+          <HomeDropdown setIdeals={(newIdeals) => {setIdeals(newIdeals)}} ideals={ideals} navigation={navigation}></HomeDropdown>
         </Right>
       </Header>
-      {ideals && (
-        <Text style={{ textAlign: 'center' }}>
-          Your ideal daily calorie intake: {ideals.calories} kcal
-        </Text>
-      )}
       <RecipeList navigation={navigation}></RecipeList>
     </Container>
   );
@@ -103,13 +98,22 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     justifyContent: 'center'
   },
-
   inputText: {
     flex: 1,
     fontSize: 18,
     marginTop: 3,
     color: '#999'
-  }
+  },
+  text: {
+    margin: 5,
+    marginLeft: 50,
+    marginRight: 50,
+    fontSize: 25,
+    alignSelf: 'center',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: '#41B3A3'
+  },
 });
 
 //props

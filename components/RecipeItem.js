@@ -64,61 +64,63 @@ const RecipeItem = (props) => {
                   style={{ height: 340, width: 340, marginRight: 5 }}
                 />
                 <View
-                style={{
-                  position: 'absolute',
-                  top: 15,
-                  left: 5,
-                  right: 0,
-                  bottom: 0
-                }}>
-                <TouchableOpacity
-                  style={{width: '40%', height: '20%'}}
-                  onPress={() => {
-                    console.log('User pressed');
+                  style={{
+                    position: 'absolute',
+                    top: 15,
+                    left: 5,
+                    right: 0,
+                    bottom: 0
                   }}
-                  
                 >
-                  <Thumbnail
-                    source={{ uri: getAvatar(singleRecipe.user_id) }}
-                    style={{
-                      borderRadius: 20,
-                      width: 40,
-                      height: 40,
-                      position: 'relative',
-                      right: 0,
-                      bottom: 0
+                  <TouchableOpacity
+                    style={{ width: '40%', height: '20%' }}
+                    onPress={() => {
+                      console.log('User pressed');
                     }}
-                  />
-                  {
-                    <Text
+                  >
+                    <Thumbnail
+                      source={{ uri: getAvatar(singleRecipe.user_id) }}
                       style={{
-                        fontWeight: 'bold',
-                        color: 'white',
+                        borderRadius: 20,
+                        width: 40,
+                        height: 40,
                         position: 'relative',
-                        top: -30,
-                        left: 50,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        textShadowRadius: 10,
-                        textShadowOffset: { width: -1.5, height: 1.5 },
-                        textShadowColor: 'black'
+                        right: 0,
+                        bottom: 0
                       }}
-                    >
-                      by {userInfo.username}
-                    </Text>
-                  }
-                </TouchableOpacity>
+                    />
+                    {
+                      <Text
+                        style={{
+                          fontWeight: 'bold',
+                          color: 'white',
+                          position: 'relative',
+                          top: -30,
+                          left: 50,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          textShadowRadius: 10,
+                          textShadowOffset: { width: -1.5, height: 1.5 },
+                          textShadowColor: 'black'
+                        }}
+                      >
+                        by {userInfo.username}
+                      </Text>
+                    }
+                  </TouchableOpacity>
                 </View>
+                <View style={{
+                    top: 230,
+                    left: 20,
+                    right: 20,
+                    bottom: 0,
+                    position: 'absolute'
+                  }}>
                 <Text
                   style={{
                     fontWeight: 'bold',
                     fontSize: 20,
                     color: 'white',
-                    position: 'absolute',
-                    top: 230,
-                    left: 20,
-                    right: 0,
-                    bottom: 0,
                     justifyContent: 'center',
                     alignItems: 'center',
                     textShadowRadius: 10,
@@ -133,11 +135,6 @@ const RecipeItem = (props) => {
                     fontWeight: 'bold',
                     fontSize: 15,
                     color: 'white',
-                    position: 'absolute',
-                    top: 280,
-                    left: 20,
-                    right: 0,
-                    bottom: 0,
                     justifyContent: 'center',
                     alignItems: 'center',
                     textShadowRadius: 10,
@@ -147,6 +144,7 @@ const RecipeItem = (props) => {
                 >
                   Calories : {recipeInfo.totalNutrients.calories}
                 </Text>
+                </View>
               </Body>
             </Body>
           </CardItem>

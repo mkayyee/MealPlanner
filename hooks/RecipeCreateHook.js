@@ -7,7 +7,7 @@ import {UserContext} from '../context/UserContext';
 
 
 const initialErrors = {
-  recipeNameError: 'The recipe must have a name (max 35 characters)',
+  recipeNameError: 'The recipe must have a name',
   instructionsError: 'Instructions minimum length is 10 characters'
 };
 const initialInputs = { recipeName: '', instructions: '' };

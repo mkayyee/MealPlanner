@@ -8,18 +8,31 @@ import {
   Image,
   TextInput,
   ScrollView,
-  Button,
-  TouchableOpacity
+  TouchableOpacity,
+  ImageBackground
 } from 'react-native';
 import PropTypes from 'prop-types';
 import IngredientItem from '../components/IngredientItem';
-import { Text, List, Card } from 'native-base';
+import {
+  Text,
+  List,
+  Card,
+  Button,
+  Header,
+  Left,
+  Right,
+  Body,
+  Title
+} from 'native-base';
 import { SelectedIngredients } from '../context/SelectedIngredients';
 import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import useRecipeForm from '../hooks/RecipeCreateHook';
-import { FontAwesome as Icon } from '@expo/vector-icons';
+import {
+  FontAwesome as Icon,
+  AntDesign as ExclamationCircle
+} from '@expo/vector-icons';
 
 const CreateRecipe = (props) => {
   const [displayErrors, setDisplayErrors] = useState(false);
@@ -87,169 +100,228 @@ const CreateRecipe = (props) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={{ marginTop: 10 }}>
-        <Button block onPress={() => resetAll()} title='Reset'></Button>
-        <Button
-          block
-          onPress={pickImage}
-          color='green'
-          title='Select Image'
-        ></Button>
-        {file && (
-          <View style={{ position: 'relative' }}>
-            <Image
-              source={{ uri: file.uri }}
-              style={{ width: '100%', height: 200, marginTop: 5 }}
-            />
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                alignSelf: 'flex-end',
-                padding: 0,
-                margin: 0,
-                right: 5,
-                top: 5
-              }}
-              onPress={() => {
-                setFile(null);
-              }}
-            >
-              <Icon name={'remove'} size={25} color={'red'}></Icon>
-            </TouchableOpacity>
-          </View>
-        )}
-      </View>
-      <View style={{ justifyContent: 'flex-start' }}>
-        <Text style={styles.text}>Recipe</Text>
-        <TextInput
-          value={inputs.recipeName}
-          fontSize={20}
-          onChangeText={handleRecipeNameChange}
-          placeholder={'recipe name...'}
-        ></TextInput>
-        <Text style={styles.text}>Ingredients</Text>
-        {ingredients.length != 1 ? (
-          <Text>({ingredients.length} items)</Text>
-        ) : (
-          <Text>(1 item)</Text>
-        )}
-        <Button
-          onPress={() => {
-            navigation.navigate('Ingredients');
-          }}
-          margin={20}
-          elevation={10}
-          color={'green'}
-          title={'New Ingredient'}
-        ></Button>
-        <ScrollView maxHeight={'50%'} nestedScrollEnabled={true}>
-          <List
-            dataArray={ingredients}
-            keyExtractor={(item, index) => item.key.toString()}
-            renderRow={(item) => (
-              <Card>
-                <IngredientItem
-                  calories={item.calories}
-                  protein={item.protein}
-                  ingredient={item.name}
-                  quantity={item.quantity}
-                  carbs={item.carbs}
-                  fat={item.fat}
-                  allergens={item.allergens}
-                  saturated_fat={item.saturated_fat}
-                  sugars={item.sugars}
-                  sodium={item.sodium}
-                />
-              </Card>
-            )}
-          ></List>
-        </ScrollView>
-        {ingredients.length > 0 && (
-          <Text style={styles.text}>Total Nutrients</Text>
-        )}
-        {ingredients.length > 0 && (
-          <View style={{ maxHeight: '25%' }} nestedScrollEnabled={true}>
-            <Text>Calories: {getNutrient('calories')}g</Text>
-            <Text>Protein: {getNutrient('protein')}g</Text>
-            <Text>Carbohydrates: {getNutrient('carbs')}g</Text>
-            <Text>Fat: {getNutrient('fat')}g</Text>
-            <Text>Saturated fat: {getNutrient('saturated_fat')}</Text>
-            <Text>Sugars: {getNutrient('sugars')}g</Text>
-            <Text>Sodium: {getNutrient('sodium')}mg</Text>
-          </View>
-        )}
-        <Text style={styles.text}>Instructions</Text>
-        <View>
-          <TextInput
-            value={inputs.instructions}
-            fontSize={20}
-            onChangeText={handleInstructionsChange}
-            placeholder={'write instructions here...'}
-          ></TextInput>
-        </View>
-        {!validateAll() ? (
-          <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-end'
-            }}
-            onPress={() => {
-              setDisplayErrors(!displayErrors);
-            }}
+    <View style={styles.container}>
+      <ImageBackground blurRadius={2} source = {require("../pictures/vegetables.jpeg")} style={{flex:1, 
+    width: '100%', 
+    height: '100%'}} > 
+      <Header style={{ backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', alignContent: 'center'}}>
+        <Left></Left>
+        <Image
+          source={require('../pictures/logo.jpg')}
+          style={{ height: 30, width: 30, marginTop: 10 }}
+        />
+        <Body>
+          <Right>
+            <Title style={{ marginTop: 15, color: 'black', textAlign: 'center'}}>
+              Meal Planner
+            </Title>
+          </Right>
+        </Body>
+        <Right />
+      </Header>
+      <ScrollView>
+        <View style={{ margin: 40, marginTop: 10, marginBottom: 0 }}>
+          <Button
+            width={'50%'}
+            style={styles.goodButton}
+            rounded
+            onPress={() => resetAll()}
           >
-            <Icon name='exclamation-triangle' color='red' size={25}></Icon>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-end'
-            }}
+            <Text>Reset</Text>
+          </Button>
+          <Button
+            rounded
+            width={'50%'}
+            style={styles.goodButton}
+            onPress={pickImage}
           >
-            <Icon name='check-circle' color='green' size={25}></Icon>
-          </TouchableOpacity>
-        )}
-        <View>
-          {displayErrors && (
-            <View>
-              {errors.recipeNameError != null && (
-                <Text style={styles.errorText}>-{errors.recipeNameError}</Text>
-              )}
-              {errors.instructionsError != null && (
-                <Text style={styles.errorText}>
-                  -{errors.instructionsError}
-                </Text>
-              )}
-              {file == null && (
-                <Text style={styles.errorText}>-You must select an image</Text>
-              )}
-              {ingredients.length < 2 && (
-                <Text style={styles.errorText}>
-                  -You must select at least 2 unique ingredients
-                </Text>
-              )}
+            <Text>Select Image</Text>
+          </Button>
+          {file && (
+            <View style={{ position: 'relative' }}>
+              <Image
+                source={{ uri: file.uri }}
+                style={{ width: '100%', height: 200, marginTop: 5 }}
+              />
+              <TouchableOpacity
+                style={{
+                  position: 'absolute',
+                  alignSelf: 'flex-end',
+                  padding: 0,
+                  margin: 0,
+                  right: 5,
+                  top: 5
+                }}
+                onPress={() => {
+                  setFile(null);
+                }}
+              >
+                <Icon name={'remove'} size={25} color={'red'}></Icon>
+              </TouchableOpacity>
             </View>
           )}
-          <Button
-            block
-            onPress={() => {
-              handleRecipeUpload(file, ingredients, navigation, resetAll);
-            }}
-            disabled={validateAll() ? false : true}
-            color={validateAll() ? 'green' : 'grey'}
-            title='Create Recipe'
-          ></Button>
         </View>
-      </View>
-    </ScrollView>
+        <View
+          style={{ justifyContent: 'flex-start', margin: 40, marginTop: 0 }}
+        >
+          <Text style={styles.text}>Recipe</Text>
+          <View style={{marginLeft: 8, marginRight: 8}}>
+          <TextInput
+            value={inputs.recipeName}
+            fontSize={20}
+            onChangeText={handleRecipeNameChange}
+            placeholder={'recipe name...'}
+            maxLength={80}
+            multiline={true}
+            blurOnSubmit={true}
+            style={styles.textInput}
+          ></TextInput>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={styles.text}>Ingredients</Text>
+            {ingredients.length != 1 ? (
+              <Text style={{marginTop: 12, color: '#fdffe9'}}>({ingredients.length} items)</Text>
+            ) : (
+              <Text style={{marginTop: 12, color: '#fdffe9'}}>(1 item)</Text>
+            )}
+          </View>
+          <Button
+            onPress={() => {
+              navigation.navigate('Ingredients');
+            }}
+            rounded
+            width={'50%'}
+            style={styles.goodButton}
+          >
+            <Text>New Ingredient</Text>
+          </Button>
+          <ScrollView maxHeight={'50%'} nestedScrollEnabled={true}>
+            <List
+              dataArray={ingredients}
+              keyExtractor={(item, index) => item.key.toString()}
+              renderRow={(item) => (
+                <Card>
+                  <IngredientItem
+                    calories={item.calories}
+                    protein={item.protein}
+                    ingredient={item.name}
+                    quantity={item.quantity}
+                    carbs={item.carbs}
+                    fat={item.fat}
+                    allergens={item.allergens}
+                    saturated_fat={item.saturated_fat}
+                    sugars={item.sugars}
+                    sodium={item.sodium}
+                  />
+                </Card>
+              )}
+            ></List>
+          </ScrollView>
+          {ingredients.length > 0 && (
+            <Text style={styles.text}>Total Nutrients</Text>
+          )}
+          {ingredients.length > 0 && (
+            <View style={{ maxHeight: '25%', marginLeft: 8}} nestedScrollEnabled={true}>
+              <Text style={styles.nutrient}>Calories: {getNutrient('calories')}g</Text>
+              <Text style={styles.nutrient}>Protein: {getNutrient('protein')}g</Text>
+              <Text style={styles.nutrient}>Carbohydrates: {getNutrient('carbs')}g</Text>
+              <Text style={styles.nutrient}>Fat: {getNutrient('fat')}g</Text>
+              <Text style={styles.nutrient}>Saturated fat: {getNutrient('saturated_fat')}</Text>
+              <Text style={styles.nutrient}>Sugars: {getNutrient('sugars')}g</Text>
+              <Text style={styles.nutrient}>Sodium: {getNutrient('sodium')}mg</Text>
+            </View>
+          )}
+          <Text style={styles.text}>Instructions</Text>
+          <View style={{ marginLeft: 8, marginRight: 8 }}>
+            <TextInput
+              value={inputs.instructions}
+              multiline={true}
+              blurOnSubmit={true}
+              fontSize={20}
+              onChangeText={handleInstructionsChange}
+              style={styles.textInput}
+              placeholder={'write instructions here...'}
+            ></TextInput>
+          </View>
+          {!validateAll() ? (
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end'
+              }}
+              onPress={() => {
+                setDisplayErrors(!displayErrors);
+              }}
+            >
+              <ExclamationCircle
+                color='#fd7e03'
+                name='exclamationcircleo'
+                size={25}
+              ></ExclamationCircle>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end'
+              }}
+            >
+              <Icon name='check-circle' color='#fd7e03' size={25}></Icon>
+            </TouchableOpacity>
+          )}
+          <View>
+            {displayErrors && (
+              <View style={{marginLeft: 5, marginRight: 5}}>
+                {errors.recipeNameError != null && (
+                  <Text style={styles.errorText}>
+                    -{errors.recipeNameError}
+                  </Text>
+                )}
+                {errors.instructionsError != null && (
+                  <Text style={styles.errorText}>
+                    -{errors.instructionsError}
+                  </Text>
+                )}
+                {file == null && (
+                  <Text style={styles.errorText}>
+                    -You must select an image
+                  </Text>
+                )}
+                {ingredients.length < 2 && (
+                  <Text style={styles.errorText}>
+                    -You must select at least 2 unique ingredients
+                  </Text>
+                )}
+              </View>
+            )}
+            <Button
+              block
+              onPress={() => {
+                handleRecipeUpload(file, ingredients, navigation, resetAll);
+              }}
+              disabled={validateAll() ? false : true}
+              style={{
+                justifyContent: 'center',
+                margin: 20,
+                marginRight: 0,
+                marginLeft: 0,
+                backgroundColor: validateAll() ? '#1b2b38' : 'grey'
+              }}
+            >
+              <Text>Create Recipe</Text>
+            </Button>
+          </View>
+        </View>
+      </ScrollView>
+      </ImageBackground>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 20,
+    marginTop: 0,
     backgroundColor: '#fff'
   },
   toolbar: {
@@ -257,11 +329,30 @@ const styles = StyleSheet.create({
     backgroundColor: '#e050ef'
   },
   text: {
-    fontSize: 25
+    margin: 5,
+    fontSize: 25,
+    color: '#fd7e03',
+    alignSelf: 'flex-start',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    textShadowColor: 'black',
+    textShadowRadius: 3,
+    textShadowOffset: {width: -1, height: 1}
   },
   errorText: {
-    color: 'red',
-    fontSize: 15
+    color: '#d53900',
+    fontSize: 15,
+  },
+  goodButton: {
+    margin: 5,
+    justifyContent: 'center',
+    backgroundColor: '#385b71',
+  },
+  textInput: {
+    marginLeft: 16, marginRight: 16, color: '#fdffe9', textShadowColor: 'black', textShadowRadius: 1, textShadowOffset: {width: -1, height: 1},
+  },
+  nutrient: {
+    marginLeft: 16, marginRight: 16, color: '#fdffe9', textShadowColor: 'black', textShadowRadius: 1, textShadowOffset: {width: -1, height: 1},
   }
 });
 
