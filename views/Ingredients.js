@@ -13,7 +13,7 @@ const Ingredients = (props) => {
   const {getAllIngredients} = mediaAPI();
   const [data] = getAllIngredients();
   const {input, handleSearchChange} = useRecipeSearch();
-  const [ingredients, setIngredients] = useContext(SelectedIngredients);
+  const {ingredients, setIngredients} = useContext(SelectedIngredients);
   const [names, setNames] = useState();
 
   const searchIngredient = (text) => {

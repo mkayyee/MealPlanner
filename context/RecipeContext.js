@@ -30,7 +30,6 @@ const RecipeProvider = (props) => {
 RecipeProvider.propTypes = {
   myRecipes: PropTypes.array,
   recipes: PropTypes.array,
-  user: PropTypes.object,
   children: PropTypes.node,
 };
 

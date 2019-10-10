@@ -209,7 +209,7 @@ const mediaAPI = () => {
 
   const userToContext = async () => {
     // Call this when app starts (= Home.js)
-    const [user, setUser ]= useContext(UserContext);
+    const [user, setUser]= useContext(UserContext);
     const getFromStorage = async () => {
       const storageUser = JSON.parse(await AsyncStorage.getItem('user'));
       console.log('storage', storageUser);

@@ -41,7 +41,7 @@ const MealItem = (props) => {
 
 
 MealItem.propTypes = {
-  singleItem: PropTypes.object,
+  singleMeal: PropTypes.object,
   navigation: PropTypes.object.isRequired,
 };
 

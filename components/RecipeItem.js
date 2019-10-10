@@ -45,7 +45,6 @@ const RecipeItem = (props) => {
   return (
     <BaseListItem
       onPress={() => {
-        console.log('Navigate to single here with:\n', recipeInfo);
         navigation.push('Single', { file: singleRecipe });
       }}
     >
