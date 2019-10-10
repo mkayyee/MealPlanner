@@ -12,6 +12,7 @@ import Home from '../views/Home';
 import Profile from '../views/Profile';
 import MyRecipes from '../views/MyRecipes';
 import Single from '../views/Single';
+import Search from '../views/Search';
 import CreateRecipe from '../views/CreateRecipe';
 import Ingredients from '../views/Ingredients';
 import BMRCalculator from '../components/BMRCalculator';
@@ -66,6 +67,12 @@ const StackNavigator = createStackNavigator({
   },
   Profile: {
     screen: Profile
+  },
+  Search: {
+    screen: Search,
+    navigationOptions: {
+      header: null // this will hide the header
+    }
   },
 });
 

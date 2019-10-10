@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import RecipeList from '../components/RecipeList';
 import HomeDropdown from '../components/HomeDropdown';
 import { UserContext } from '../context/UserContext';
-
 import mediaAPI from '../hooks/ApiHooks';
 
 const Home = (props) => {
@@ -14,9 +13,9 @@ const Home = (props) => {
   const { navigation } = props;
   const { getIdealIntakes, userToContext } = mediaAPI();
   const [ideals, setIdeals] = useState(null);
-
+  
   userToContext().then((user) => {
-    console.log('usercontext', user);
+    //console.log('usercontext', user);
   });
  
 
@@ -45,7 +44,6 @@ const Home = (props) => {
       console.log(user);
     }
     getUserData();
-    console.log("uuuuserr", user);
   });
 
   return (
@@ -74,6 +72,9 @@ const Home = (props) => {
             placeholder={'Search recipes'}
             placeholderTextColor={'#999'}
             autoCorrect={false}
+            onFocus={() => {
+              navigation.push('Search');
+            }} 
           />
         </View>
         <Right>

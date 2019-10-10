@@ -6,7 +6,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { AppLoading } from 'expo';
 import { SIProvider } from './context/SelectedIngredients';
 import { IngredientProvider } from './context/IngredientContext';
-
+import { SRProvider } from './context/SelectedRecipes';
 import Navigator from './navigators/Navigator';
 import { RecipeProvider } from './context/RecipeContext';
 import { UserProvider } from './context/UserContext';
@@ -37,9 +37,11 @@ const App = () => {
       <RecipeProvider>
         
           <IngredientProvider>
+            <SRProvider>
             <SIProvider>
               <Navigator />
             </SIProvider>
+            </SRProvider>
           </IngredientProvider>
         
       </RecipeProvider>

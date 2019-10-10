@@ -3,7 +3,7 @@ import {StyleSheet, View,  AsyncStorage, Image, Alert} from 'react-native';
 import PropTypes from 'prop-types';
 import { List as BaseList, Container, Title, Header, Content, Card, CardItem, Thumbnail, Text, Button, Left, Body, Right } from 'native-base';
 import DatePicker from 'react-native-datepicker';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
 
 import {UserContext} from '../context/UserContext';
 import mediaAPI from '../hooks/ApiHooks';
