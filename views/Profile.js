@@ -174,7 +174,10 @@ const Profile = (props) => {
           <CardItem>
             <Body>
               <Body>
+        {user.ideals ? 
+        <Text>CONSUMED CALORIES: {breakfastCalories+lunchCalories+dinnerCalories+extraCalories} ({(Math.round(((breakfastCalories+lunchCalories+dinnerCalories+extraCalories)/user.ideals.calories) * 100)) != Infinity ? (Math.round(((breakfastCalories+lunchCalories+dinnerCalories+extraCalories)/user.ideals.calories) * 100)) : 0}% of your daily plan)</Text> :
         <Text>CONSUMED CALORIES: {breakfastCalories+lunchCalories+dinnerCalories+extraCalories}</Text>
+       }
         </Body>
         </Body>
         </CardItem>

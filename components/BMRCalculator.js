@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, Button, H1 } from 'native-base';
+import { View, StyleSheet, ImageBackground } from 'react-native';
+import { Text, Button, Card, Content } from 'native-base';
 import FormNumberImput from '../components/FormNumberInput';
 import SwitchSelector from 'react-native-switch-selector';
 import stateChanger from '../components/stateChanger';
 import mediaAPI from '../hooks/ApiHooks';
 import { UserContext } from '../context/UserContext';
+
 
 const BMRCalculator = (props) => {
   const [user, setUser] = useContext(UserContext);
@@ -22,39 +23,34 @@ const BMRCalculator = (props) => {
     console.log('State changed or initiated. New state:\n', state);
   });
   const calculateBMR = (age, height, weight, gender, update = false) => {
+    const maleCalories = Math.round(((10*weight) + (6.25*height) + (5*age)) + 5);
+    const femaleCalories = Math.round(((9.247*weight) + (3.098*height) + (4.33*age)) -161);
     let userID = user.user_id;
-    if (gender == 'Male') {
-      let calculateMale = Math.round(
-        10.0 * weight + 6.25 * height + 5.0 * age + 5
-      );
-      const maleObject = {
-        calories: calculateMale,
-        height: height,
-        age: age,
-        weight: weight,
-        gender: gender
-      };
+    const maleObject = {
+      calories: maleCalories,
+      height: height,
+      age: age,
+      weight: weight,
+      gender: gender
+    };
+    const femaleObject = {
+      id: userID,
+      calories: femaleCalories,
+      height: height,
+      age: age,
+      weight: weight,
+      gender: gender
+      
+    };
+    if (gender === 'Male') {
       if (!update) {
         addIdealIntakes({ id: userID, data: maleObject });
       } else {
         modifyIdealIntakes({ id: userID, data: maleObject });
       }
     } else {
-      let calculateFemale = Math.round(
-        9.247 * weight + 3.098 * height + 4.33 * age - 161
-      );
-      const femaleObject = {
-        id: userID,
-        data: {
-          calories: calculateFemale,
-          height: height,
-          age: age,
-          weight: weight,
-          gender: gender
-        }
-      };
       if (!update) {
-        addIdealIntakes(femaleObject);
+        addIdealIntakes({id: userID, data: femaleObject});
       } else {
         modifyIdealIntakes({ id: userID, data: femaleObject });
       }
@@ -75,34 +71,36 @@ const BMRCalculator = (props) => {
     }, 2);
   };
   return (
-    <View>
+      <ImageBackground blurRadius={5} source = {require("../pictures/potentialappBG.jpeg")} style={{flex:1, 
+    width: '100%', 
+    height: '100%'}} > 
+      <View style={{marginLeft: 45, marginRight: 45}}>
       <Text
         style={{
-          fontSize: 40,
-          color: '#41B3A3',
+          fontSize: 35,
+          color: '#fd7e03',
           alignSelf: 'center',
           fontWeight: 'bold',
-          textShadowRadius: 0.5,
-          textShadowOffset: { width: -1, height: 1 },
-          textShadowColor: 'black'
+          textAlign: 'center',
         }}
       >
-        BMR Calculator
+        Basal Metabolic Rate Calculator
       </Text>
+      </View>
       {user.ideals != null && user.ideals && !modify ? (
         <View>
           {user.ideals.height ? (
             <View>
               <Text style={styles.text}>
-                Your weight: {user.ideals.weight} kg
+                Weight: {user.ideals.weight} kg
               </Text>
               <Text style={styles.text}>
-                Your height: {user.ideals.height} cm
+                Height: {user.ideals.height} cm
               </Text>
-              <Text style={styles.text}>Your age: {user.ideals.age}</Text>
-              <Text style={styles.text}>Your gender: {user.ideals.gender}</Text>
-              <Text style={styles.text}>
-                Your ideal daily calorie intake: {user.ideals.calories} kcal
+              <Text style={styles.text}>Age: {user.ideals.age}</Text>
+              <Text style={styles.text}>Gender: {user.ideals.gender}</Text>
+              <Text style={styles.calorieIntake}>
+                Ideal daily calorie intake: {user.ideals.calories} kcal
               </Text>
             </View>
           ) : (
@@ -120,7 +118,7 @@ const BMRCalculator = (props) => {
               alignSelf: 'center',
               alignContent: 'center',
               justifyContent: 'center',
-              backgroundColor: '#41B3A3',
+              backgroundColor: '#385b71',
               margin: 5
             }}
           >
@@ -128,6 +126,7 @@ const BMRCalculator = (props) => {
           </Button>
           <Button
             onPress={() => {
+              setState(initialState);
               setModify(true);
             }}
             rounded
@@ -136,7 +135,7 @@ const BMRCalculator = (props) => {
               alignSelf: 'center',
               alignContent: 'center',
               justifyContent: 'center',
-              backgroundColor: '#41B3A3',
+              backgroundColor: '#385b71',
               margin: 5
             }}
           >
@@ -171,7 +170,7 @@ const BMRCalculator = (props) => {
             onPress={(value) => {
               changeState('gender', value, state, setState);
             }}
-            buttonColor={'#41B3A3'}
+            buttonColor={'#fd7e03'}
             style={{ marginTop: 10 }}
             options={options}
           ></SwitchSelector>
@@ -180,7 +179,7 @@ const BMRCalculator = (props) => {
               alignSelf: 'center',
               marginTop: 10,
               width: '50%',
-              backgroundColor: '#41B3A3',
+              backgroundColor: '#385b71',
               justifyContent: 'center'
             }}
             onPress={() => {
@@ -207,7 +206,7 @@ const BMRCalculator = (props) => {
           </Button>
         </View>
       )}
-    </View>
+      </ImageBackground>
   );
 };
 const options = [
@@ -230,7 +229,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
     fontWeight: 'bold',
-    color: '#41B3A3'
+    color: '#fd7e03'
   },
   inputText: {
     margin: 5,
@@ -238,7 +237,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
     fontWeight: 'bold',
-    color: '#41B3A3'
+    color: '#fd7e03',
+  },
+  calorieIntake: {
+    color: '#C7C7CD',
+    margin: 5,
+    marginLeft: 50,
+    marginRight: 50,
+    fontSize: 25,
+    alignSelf: 'center',
+    textAlign: 'center',
+    fontWeight: 'bold',
   }
 });
 

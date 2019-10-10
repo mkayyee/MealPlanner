@@ -110,16 +110,18 @@ const RecipeItem = (props) => {
                     }
                   </TouchableOpacity>
                 </View>
+                <View style={{
+                    top: 230,
+                    left: 20,
+                    right: 20,
+                    bottom: 0,
+                    position: 'absolute'
+                  }}>
                 <Text
                   style={{
                     fontWeight: 'bold',
                     fontSize: 20,
                     color: 'white',
-                    position: 'absolute',
-                    top: 230,
-                    left: 20,
-                    right: 0,
-                    bottom: 0,
                     justifyContent: 'center',
                     alignItems: 'center',
                     textShadowRadius: 10,
@@ -134,11 +136,6 @@ const RecipeItem = (props) => {
                     fontWeight: 'bold',
                     fontSize: 15,
                     color: 'white',
-                    position: 'absolute',
-                    top: 280,
-                    left: 20,
-                    right: 0,
-                    bottom: 0,
                     justifyContent: 'center',
                     alignItems: 'center',
                     textShadowRadius: 10,
@@ -148,6 +145,7 @@ const RecipeItem = (props) => {
                 >
                   Calories : {recipeInfo.totalNutrients.calories}
                 </Text>
+                </View>
               </Body>
             </Body>
           </CardItem>

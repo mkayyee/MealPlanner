@@ -1,14 +1,27 @@
-import React, {useEffect} from 'react';
-import { Text, View, Picker, TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react';
+import {
+  Text,
+  View,
+  Picker,
+  TouchableOpacity,
+  AsyncStorage
+} from 'react-native';
+
+const signOutAsync = async () => {
+  await AsyncStorage.clear();
+};
 
 const HomeDropdown = (props) => {
   const router = (index) => {
-      if (index == 0){
-          return 'Profile';
-      }
+    if (index == 1) {
       return 'BMRCalculator';
+    } else if (index == 2) {
+      signOutAsync();
+      return ('Auth');
+    }
+    return ('Home');
   };
-  useEffect(()=> {
+  useEffect(() => {
     console.log(props.ideals);
   });
   return (
@@ -16,11 +29,16 @@ const HomeDropdown = (props) => {
       <Picker
         style={{ width: 30 }}
         onValueChange={(itemValue, index) => {
-          props.navigation.navigate(router(index), {userID: props.userID, ideals: props.ideals, setIdeals: props.setIdeals});
+          props.navigation.navigate(router(index), {
+            userID: props.userID,
+            ideals: props.ideals,
+            setIdeals: props.setIdeals
+          });
         }}
       >
-        <Picker.Item label='MyPlan' value='My Plan' />
-        <Picker.Item label='BMRCalculator' value='Calculate BMR' />
+        <Picker.Item label='Home' value='Home' />
+        <Picker.Item label='Calculate BMR' value='Calculate BMR' />
+        <Picker.Item label='Logout' value='Auth' />
       </Picker>
     </View>
   );
