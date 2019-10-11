@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {
   ListItem as BaseListItem,
@@ -15,12 +15,16 @@ import {RecipeContext} from '../context/RecipeContext';
 
 const MyRecipesListItem = (props) => {
 
-  const [setRecipes, setMyRecipes] = useContext(RecipeContext);
+  const {setRecipes, setMyRecipes} = useContext(RecipeContext);
   
   const {navigation, singleRecipe} = props;
   const {getThumbnail, deleteMedia} = mediaAPI();
   const tn = getThumbnail(singleRecipe.file_id);
   const recipeInfo = JSON.parse(singleRecipe.description);
+
+  useEffect(() => {
+    console.log()
+  });
 
   return (
     <BaseListItem thumbnail>
