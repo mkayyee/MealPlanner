@@ -105,7 +105,7 @@ const Profile = (props) => {
     } 
 
   return (
-    <Container style={{backgroundColor: '#1f313f'}}>
+    <Container>
       <StatusBar backgroundColor='#1f425f'></StatusBar>
         <Header style={{ backgroundColor: 'white'}}>
       <Image source={require("../pictures/logo.jpg")} style={{height: 30, width: 30, marginTop:10, marginRight: 10, marginLeft: 10}} />

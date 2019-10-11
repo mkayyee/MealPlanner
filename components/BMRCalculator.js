@@ -248,7 +248,7 @@ const BMRCalculator = (props) => {
           >
             <Text style={{ textAlign: 'center' }}>Calculate</Text>
           </Button>
-          <Button
+          {modify && <Button
             style={{
               alignSelf: 'center',
               marginTop: 10,
@@ -267,7 +267,7 @@ const BMRCalculator = (props) => {
             rounded
           >
             <Text style={{ textAlign: 'center' }}>Back</Text>
-          </Button>
+          </Button>}
         </View>
       )}
     </ImageBackground>
