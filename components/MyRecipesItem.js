@@ -15,7 +15,7 @@ import {RecipeContext} from '../context/RecipeContext';
 
 const MyRecipesListItem = (props) => {
 
-  const {setRecipes, setMyRecipes} = useContext(RecipeContext);
+  const [setRecipes, setMyRecipes] = useContext(RecipeContext);
   
   const {navigation, singleRecipe} = props;
   const {getThumbnail, deleteMedia} = mediaAPI();

@@ -6,7 +6,7 @@ import { SelectedIngredients } from '../context/SelectedIngredients';
 
 const AddIngredient = (props) => {
   const [quantity, setQuantity] = useState(props.quantity);
-  const {ingredients, setIngredients} = useContext(SelectedIngredients);
+  const [ingredients, setIngredients] = useContext(SelectedIngredients);
 
   const ingredientObject = (ingredient, info, key, quantity) => {
     const allergens = [];
